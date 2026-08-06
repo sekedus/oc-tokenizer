@@ -3,12 +3,12 @@
  * Validates token counts for different models with small, medium, and large inputs
  */
 
-import { describe, test, expect } from "bun:test";
-import { count } from "./sdk";
+import { describe, test, expect } from "vitest";
+import { count } from "./sdk.ts";
 import type { ModelMessage, ToolSet } from "ai";
-import { models, Tokenizer, type Model } from "./index";
-import * as o200k from "./encoding/o200k_base";
-import * as claude from "./encoding/claude";
+import { models, Tokenizer, type Model } from "./index.ts";
+import * as o200k from "./encoding/o200k_base.ts";
+import * as claude from "./encoding/claude.ts";
 import { z } from "zod";
 
 // Test data: small, medium, and large scenarios

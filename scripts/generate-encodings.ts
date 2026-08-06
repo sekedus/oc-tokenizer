@@ -7,7 +7,7 @@
  * - Decoder with strings where possible (faster decode)
  * 
  * Usage:
- *   bun run src/encoding/generate.ts
+ *   node scripts/generate-encodings.ts
  */
 
 import base64 from "base64-js";

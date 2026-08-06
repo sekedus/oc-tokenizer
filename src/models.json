@@ -171,12 +171,13 @@
     },
     "name": "Claude Opus 4",
     "contextWindow": 200000,
-    "maxTokens": 32000,
+    "maxTokens": 8192,
     "pricing": {
       "input": 0.000015,
       "output": 0.000075,
       "input_cache_read": 0.0000015,
-      "input_cache_write": 0.00001875
+      "input_cache_write": 0.00001875,
+      "web_search": 10
     }
   },
   "anthropic/claude-opus-4.1": {
@@ -202,7 +203,8 @@
       "input": 0.000015,
       "output": 0.000075,
       "input_cache_read": 0.0000015,
-      "input_cache_write": 0.00001875
+      "input_cache_write": 0.00001875,
+      "web_search": 10
     }
   },
   "anthropic/claude-sonnet-4": {
@@ -222,13 +224,17 @@
       "perArrayOfObjects": 13
     },
     "name": "Claude Sonnet 4",
-    "contextWindow": 200000,
-    "maxTokens": 64000,
+    "contextWindow": 1000000,
+    "maxTokens": 8192,
     "pricing": {
       "input": 0.000003,
+      "input_tiers": null,
       "output": 0.000015,
+      "output_tiers": null,
       "input_cache_read": 3e-7,
-      "input_cache_write": 0.00000375
+      "input_cache_read_tiers": null,
+      "input_cache_write": 0.00000375,
+      "input_cache_write_tiers": null
     }
   },
   "anthropic/claude-sonnet-4.5": {
@@ -248,13 +254,19 @@
       "perArrayOfObjects": 13
     },
     "name": "Claude Sonnet 4.5",
-    "contextWindow": 200000,
+    "contextWindow": 1000000,
     "maxTokens": 64000,
     "pricing": {
       "input": 0.000003,
+      "input_tiers": null,
       "output": 0.000015,
+      "output_tiers": null,
       "input_cache_read": 3e-7,
-      "input_cache_write": 0.00000375
+      "input_cache_read_tiers": null,
+      "input_cache_write": 0.00000375,
+      "input_cache_write_tiers": null,
+      "web_search": 10,
+      "regional": null
     }
   },
   "openai/gpt-4-turbo": {
@@ -878,7 +890,7 @@
     "contextWindow": 40960,
     "maxTokens": 16384,
     "pricing": {
-      "input": 6e-8,
+      "input": 1.2e-7,
       "output": 2.4e-7
     }
   },
@@ -898,12 +910,12 @@
       "perNestedObject": 10,
       "perArrayOfObjects": 11
     },
-    "name": "Qwen3 235B A22B Instruct 2507",
-    "contextWindow": 40960,
+    "name": "Qwen3 235B A22B",
+    "contextWindow": 262144,
     "maxTokens": 16384,
     "pricing": {
-      "input": 1.3e-7,
-      "output": 6e-7
+      "input": 2.2e-7,
+      "output": 8.8e-7
     }
   },
   "alibaba/qwen-3-30b": {
@@ -926,8 +938,8 @@
     "contextWindow": 40960,
     "maxTokens": 16384,
     "pricing": {
-      "input": 8e-8,
-      "output": 2.9e-7
+      "input": 1.2e-7,
+      "output": 5e-7
     }
   },
   "alibaba/qwen-3-32b": {
@@ -946,12 +958,12 @@
       "perNestedObject": 10,
       "perArrayOfObjects": 11
     },
-    "name": "Qwen 3.32B",
-    "contextWindow": 40960,
-    "maxTokens": 16384,
+    "name": "Qwen 3 32B",
+    "contextWindow": 128000,
+    "maxTokens": 8192,
     "pricing": {
-      "input": 1e-7,
-      "output": 3e-7
+      "input": 1.6e-7,
+      "output": 6.4e-7
     }
   },
   "alibaba/qwen3-coder": {
@@ -972,10 +984,14 @@
     },
     "name": "Qwen3 Coder 480B A35B Instruct",
     "contextWindow": 262144,
-    "maxTokens": 66536,
+    "maxTokens": 65536,
     "pricing": {
-      "input": 3.8e-7,
-      "output": 0.00000153
+      "input": 0.0000015,
+      "input_tiers": null,
+      "output": 0.0000075,
+      "output_tiers": null,
+      "input_cache_read": 3e-7,
+      "input_cache_read_tiers": null
     }
   },
   "alibaba/qwen3-coder-plus": {
@@ -999,7 +1015,11 @@
     "maxTokens": 65536,
     "pricing": {
       "input": 0.000001,
-      "output": 0.000005
+      "input_tiers": null,
+      "output": 0.000005,
+      "output_tiers": null,
+      "input_cache_read": 2e-7,
+      "input_cache_read_tiers": null
     }
   },
   "alibaba/qwen3-max": {
@@ -1023,8 +1043,11 @@
     "maxTokens": 32768,
     "pricing": {
       "input": 0.0000012,
+      "input_tiers": null,
       "output": 0.000006,
-      "input_cache_read": 2.4e-7
+      "output_tiers": null,
+      "input_cache_read": 2.4e-7,
+      "input_cache_read_tiers": null
     }
   },
   "alibaba/qwen3-next-80b-a3b-instruct": {
@@ -1044,11 +1067,11 @@
       "perArrayOfObjects": 11
     },
     "name": "Qwen3 Next 80B A3B Instruct",
-    "contextWindow": 65536,
-    "maxTokens": 65536,
+    "contextWindow": 131072,
+    "maxTokens": 32768,
     "pricing": {
       "input": 1.5e-7,
-      "output": 0.0000015
+      "output": 0.0000012
     }
   },
   "alibaba/qwen3-next-80b-a3b-thinking": {
@@ -1068,11 +1091,11 @@
       "perArrayOfObjects": 11
     },
     "name": "Qwen3 Next 80B A3B Thinking",
-    "contextWindow": 65536,
-    "maxTokens": 65536,
+    "contextWindow": 131072,
+    "maxTokens": 32768,
     "pricing": {
       "input": 1.5e-7,
-      "output": 0.0000015
+      "output": 0.0000012
     }
   },
   "alibaba/qwen3-vl-instruct": {
@@ -1095,8 +1118,8 @@
     "contextWindow": 131072,
     "maxTokens": 129024,
     "pricing": {
-      "input": 7e-7,
-      "output": 0.0000028
+      "input": 4e-7,
+      "output": 0.0000016
     }
   },
   "amazon/nova-lite": {
@@ -1120,7 +1143,8 @@
     "maxTokens": 8192,
     "pricing": {
       "input": 6e-8,
-      "output": 2.4e-7
+      "output": 2.4e-7,
+      "regional": null
     }
   },
   "amazon/nova-micro": {
@@ -1144,7 +1168,8 @@
     "maxTokens": 8192,
     "pricing": {
       "input": 3.5e-8,
-      "output": 1.4e-7
+      "output": 1.4e-7,
+      "regional": null
     }
   },
   "amazon/nova-pro": {
@@ -1168,7 +1193,8 @@
     "maxTokens": 8192,
     "pricing": {
       "input": 8e-7,
-      "output": 0.0000032
+      "output": 0.0000032,
+      "regional": null
     }
   },
   "deepseek/deepseek-v3": {
@@ -1189,10 +1215,11 @@
     },
     "name": "DeepSeek V3 0324",
     "contextWindow": 163840,
-    "maxTokens": 16384,
+    "maxTokens": 163840,
     "pricing": {
-      "input": 7.7e-7,
-      "output": 7.7e-7
+      "input": 2.7e-7,
+      "output": 0.00000112,
+      "input_cache_read": 1.35e-7
     }
   },
   "deepseek/deepseek-v3.1": {
@@ -1211,12 +1238,13 @@
       "perNestedObject": 10,
       "perArrayOfObjects": 11
     },
-    "name": "DeepSeek-V3.1",
+    "name": "DeepSeek V3.1",
     "contextWindow": 163840,
     "maxTokens": 128000,
     "pricing": {
-      "input": 3e-7,
-      "output": 0.000001
+      "input": 2.5e-7,
+      "output": 9.5e-7,
+      "input_cache_read": 1.3e-7
     }
   },
   "deepseek/deepseek-v3.1-terminus": {
@@ -1240,7 +1268,8 @@
     "maxTokens": 65536,
     "pricing": {
       "input": 2.7e-7,
-      "output": 0.000001
+      "output": 0.000001,
+      "input_cache_read": 1.35e-7
     }
   },
   "deepseek/deepseek-v3.2-exp": {
@@ -1939,11 +1968,15 @@
     },
     "name": "Gemini 2.5 Flash",
     "contextWindow": 1000000,
-    "maxTokens": 64000,
+    "maxTokens": 65536,
     "pricing": {
       "input": 3e-7,
       "output": 0.0000025,
-      "input_cache_read": 3e-8
+      "input_cache_read": 3e-8,
+      "web_search": 35,
+      "maps_search": 25,
+      "service_tiers": null,
+      "regional": null
     }
   },
   "google/gemini-2.5-flash-lite": {
@@ -1968,7 +2001,11 @@
     "pricing": {
       "input": 1e-7,
       "output": 4e-7,
-      "input_cache_read": 1e-8
+      "input_cache_read": 1e-8,
+      "web_search": 35,
+      "maps_search": 25,
+      "service_tiers": null,
+      "regional": null
     }
   },
   "google/gemini-2.5-flash-lite-preview-09-2025": {
@@ -2041,8 +2078,15 @@
     "maxTokens": 65536,
     "pricing": {
       "input": 0.00000125,
+      "input_tiers": null,
       "output": 0.00001,
-      "input_cache_read": 1.25e-7
+      "output_tiers": null,
+      "input_cache_read": 1.25e-7,
+      "input_cache_read_tiers": null,
+      "web_search": 35,
+      "maps_search": 25,
+      "service_tiers": null,
+      "regional": null
     }
   },
   "deepseek/deepseek-r1": {
@@ -2062,12 +2106,11 @@
       "perArrayOfObjects": 1
     },
     "name": "DeepSeek-R1",
-    "contextWindow": 160000,
-    "maxTokens": 16384,
+    "contextWindow": 128000,
+    "maxTokens": 8192,
     "pricing": {
-      "input": 5e-7,
-      "output": 0.00000215,
-      "input_cache_read": 4e-7
+      "input": 0.00000135,
+      "output": 0.0000054
     }
   },
   "anthropic/claude-haiku-4.5": {
@@ -2093,7 +2136,9 @@
       "input": 0.000001,
       "output": 0.000005,
       "input_cache_read": 1e-7,
-      "input_cache_write": 0.00000125
+      "input_cache_write": 0.00000125,
+      "web_search": 10,
+      "regional": null
     }
   },
   "minimax/minimax-m2": {
@@ -2235,12 +2280,12 @@
       "perArrayOfObjects": 11,
       "contentMultiplier": 1
     },
-    "name": "Qwen3 235B A22B Thinking 2507",
-    "contextWindow": 262114,
-    "maxTokens": 262114,
+    "name": "Qwen3 VL 235B A22B Thinking",
+    "contextWindow": 131072,
+    "maxTokens": 32768,
     "pricing": {
-      "input": 3e-7,
-      "output": 0.0000029
+      "input": 4e-7,
+      "output": 0.000004
     }
   },
   "anthropic/claude-opus-4.5": {
@@ -2266,7 +2311,9 @@
       "input": 0.000005,
       "output": 0.000025,
       "input_cache_read": 5e-7,
-      "input_cache_write": 0.00000625
+      "input_cache_write": 0.00000625,
+      "web_search": 10,
+      "regional": null
     }
   },
   "google/gemini-3-pro-preview": {

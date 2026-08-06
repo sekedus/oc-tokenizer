@@ -1,10 +1,10 @@
-import Tokenizer from "./tokenizer";
-import modelsJson from "./models.json";
-import type * as encodings from "./encoding";
+import Tokenizer from "./tokenizer.ts";
+import modelsJson from "./models.json" with { type: "json" };
+import type * as encodings from "./encoding/index.ts";
 
 export default Tokenizer;
 export { Tokenizer };
-export type { Encoding } from "./tokenizer";
+export type { Encoding } from "./tokenizer.ts";
 
 export type ModelName = keyof typeof modelsJson;
 

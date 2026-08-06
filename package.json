@@ -7,17 +7,19 @@
     "url": "https://coder.com"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "ai": "^5.0.105",
+    "@types/node": "^22",
+    "ai": "^7.0.0",
     "base64-js": "^1.5.1",
     "gpt-tokenizer": "^3.0.1",
     "mitata": "^1.0.34",
     "prettier": "^3.6.2",
     "tiktoken": "^1.0.22",
-    "tsdown": "^0.15.6"
+    "tsdown": "^0.15.6",
+    "typescript": "^5.9.3",
+    "vitest": "^3"
   },
   "peerDependencies": {
-    "ai": "^5.0.0"
+    "ai": "^7.0.0"
   },
   "peerDependenciesMeta": {
     "ai": {
@@ -29,12 +31,24 @@
   "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
-      "sdk": ["./dist/sdk.d.ts"],
-      "encoding": ["./dist/encoding/index.d.ts"],
-      "encoding/cl100k_base": ["./dist/encoding/cl100k_base.d.ts"],
-      "encoding/o200k_base": ["./dist/encoding/o200k_base.d.ts"],
-      "encoding/p50k_base": ["./dist/encoding/p50k_base.d.ts"],
-      "encoding/claude": ["./dist/encoding/claude.d.ts"]
+      "sdk": [
+        "./dist/sdk.d.ts"
+      ],
+      "encoding": [
+        "./dist/encoding/index.d.ts"
+      ],
+      "encoding/cl100k_base": [
+        "./dist/encoding/cl100k_base.d.ts"
+      ],
+      "encoding/o200k_base": [
+        "./dist/encoding/o200k_base.d.ts"
+      ],
+      "encoding/p50k_base": [
+        "./dist/encoding/p50k_base.d.ts"
+      ],
+      "encoding/claude": [
+        "./dist/encoding/claude.d.ts"
+      ]
     }
   },
   "exports": {
@@ -119,9 +133,10 @@
     "access": "public"
   },
   "scripts": {
+    "bench": "node bench/versus.ts",
     "build": "tsdown",
-    "bench": "bun run bench/*",
     "format": "prettier --cache --write \"src/**/*.{ts,tsx,json}\"",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "type": "module"

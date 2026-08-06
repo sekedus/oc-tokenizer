@@ -1,9 +1,9 @@
 import { streamText } from "ai"
-import Tokenizer from "../src/tokenizer"
-import * as o200k from "../src/encoding/o200k_base"
-import * as cl100k from "../src/encoding/cl100k_base"
-import * as p50k from "../src/encoding/p50k_base"
-import * as claude from "../src/encoding/claude"
+import Tokenizer from "../src/tokenizer.ts"
+import * as o200k from "../src/encoding/o200k_base.ts"
+import * as cl100k from "../src/encoding/cl100k_base.ts"
+import * as p50k from "../src/encoding/p50k_base.ts"
+import * as claude from "../src/encoding/claude.ts"
 
 // Test messages to compare - using diverse content types for more accurate differentiation
 // We include various content types to test how different tokenizers handle:

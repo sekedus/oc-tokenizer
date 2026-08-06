@@ -13,8 +13,8 @@
  */
 
 import { bench, run, group } from "mitata";
-import { Tokenizer } from "../src/index";
-import * as o200k from "../src/encoding/o200k_base";
+import { Tokenizer } from "../src/index.ts";
+import * as o200k from "../src/encoding/o200k_base.ts";
 import { encode, decode } from "gpt-tokenizer";
 import { get_encoding } from "tiktoken";
 

@@ -1,12 +1,12 @@
 import { streamText, tool, type ModelMessage } from "ai";
 import { z } from "zod";
-import { type ModelName, models, type Model } from "../src"
+import { type ModelName, models, type Model } from "../src/index.ts"
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import { join } from "path";
-import Tokenizer from "../src/tokenizer";
+import Tokenizer from "../src/tokenizer.ts";
 import { createHash } from "crypto";
-import { count } from "../src/sdk";
-import * as encodings from "../src/encoding";
+import { count } from "../src/sdk.ts";
+import * as encodings from "../src/encoding/index.ts";
 
 if (!process.env.AI_GATEWAY_API_KEY) {
     throw new Error("No AI_GATEWAY_API_KEY");
@@ -238,6 +238,10 @@ async function testModelAtScale(modelName: ModelName, targetTokens: number): Pro
         messages,
         tools,
         maxOutputTokens: 16,
+        // This measurement script intentionally passes a system message inside
+        // `messages` to measure its token overhead. The messages are trusted
+        // server-side data, so opt in to the v7 behavior that rejects them.
+        allowSystemInMessages: true,
     });
     await result.consumeStream();
     const usage = await result.usage;
@@ -430,5 +434,5 @@ console.log(fullTable);
 
 updateReadme(popularTable, fullTable);
 
-console.log("\n✅ Done! Run 'bun run scripts/generate-accuracy.ts' to update accuracy metrics.");
+console.log("\n✅ Done! Run 'node scripts/generate-accuracy.ts' to update accuracy metrics.");
 

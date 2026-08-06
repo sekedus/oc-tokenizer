@@ -1,10 +1,10 @@
 import { streamText, tool } from "ai"
 import { z } from "zod"
-import Tokenizer from "../src/tokenizer"
+import Tokenizer from "../src/tokenizer.ts"
 import { readFileSync, writeFileSync, existsSync } from "fs"
 import { join } from "path"
-import { findBestTokenizer, type TokenizerResult } from "./find-best-tokenizer"
-import * as encoding from "../src/encoding"
+import { findBestTokenizer, type TokenizerResult } from "./find-best-tokenizer.ts"
+import * as encoding from "../src/encoding/index.ts"
 
 if (!process.env.AI_GATEWAY_API_KEY) {
     throw new Error("AI_GATEWAY_API_KEY is not set")
@@ -98,6 +98,10 @@ const run = async (model: string, messages: any[], tools?: any) => {
         messages,
         maxOutputTokens: 16,
         tools,
+        // These measurement scripts intentionally pass system messages inside
+        // `messages` to measure their token overhead. The messages are trusted
+        // server-side data, so opt in to the v7 default that rejects them.
+        allowSystemInMessages: true,
     })
     await result.consumeStream()
     const usage = await result.usage

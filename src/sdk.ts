@@ -1,4 +1,4 @@
-import Tokenizer from "./tokenizer";
+import Tokenizer from "./tokenizer.ts";
 import type { ModelMessage, ToolSet } from "ai";
 import type { Model, ModelTokens } from ".";
 
@@ -145,8 +145,13 @@ function countToolsTokensDetailed<TOOLS extends ToolSet = ToolSet>(
       // Count description tokens
       let descriptionTokens = 0;
       if (tool.description) {
-        descriptionTokens =
-          config.perDesc + tokenizer.encode(tool.description).length;
+        descriptionTokens = config.perDesc;
+        // In AI SDK v7, tool descriptions can be dynamic (a function). The
+        // resulting text is unknown at count time, so only count text tokens
+        // for static string descriptions.
+        if (typeof tool.description === "string") {
+          descriptionTokens += tokenizer.encode(tool.description).length;
+        }
       }
 
       // Count inputSchema tokens

@@ -3,10 +3,10 @@
  * Validates against tiktoken and gpt-tokenizer
  */
 
-import { describe, test, expect, beforeAll, afterAll } from "bun:test";
-import Tokenizer from "./tokenizer";
-import * as o200k from "./encoding/o200k_base";
-import * as cl100k from "./encoding/cl100k_base";
+import { describe, test, expect, beforeAll, afterAll } from "vitest";
+import Tokenizer from "./tokenizer.ts";
+import * as o200k from "./encoding/o200k_base.ts";
+import * as cl100k from "./encoding/cl100k_base.ts";
 import { get_encoding, type Tiktoken } from "tiktoken";
 import { encode as gptEncode, decode as gptDecode } from "gpt-tokenizer";
 

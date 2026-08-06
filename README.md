@@ -28,7 +28,7 @@ A faster than tiktoken tokenizer with first-class support for Vercel's AI SDK.
 Install:
 
 ```sh
-bun install ai-tokenizer
+npm install ai-tokenizer
 ```
 
 Estimate tokens with the AI SDK:
@@ -207,18 +207,18 @@ Validated against actual API responses with pseudo-random messages:
 > [!WARNING]
 > Not every tool/token scenario is tested for accuracy. There will be edge-cases where this is more/less accurate. If you find this inaccurate for your scenario, please open an issue.
 
-Run `bun run scripts/generate-accuracy.ts` to update this table. Refer to [accuracy.json](./accuracy.json) for greater detail.
+Run `node scripts/generate-accuracy.ts` to update this table. Refer to [accuracy.json](./accuracy.json) for greater detail.
 
 ## Performance
 
 ai-tokenizer is **5-7x faster than tiktoken** for counting tokens. It is on par with gpt-tokenizer.
 
 ```bash
-$ bun bench/versus
+$ node bench/versus
 
 clk: ~3.96 GHz
 cpu: AMD Ryzen AI 9 HX 370 w/ Radeon 890M
-runtime: bun 1.2.19 (x64-linux)
+runtime: node 22.23.1 (x64-linux)
 
 benchmark                   avg (min … max) p75 / p99    (min … top 1%)
 ------------------------------------------- -------------------------------
@@ -345,7 +345,7 @@ tiktoken                     131.95 ms/iter 131.85 ms        █
                     (576.00 kb … 768.00 kb) 720.00 kb █▁██▁█▁█▁▁█▁█▁▁▁▁▁▁▁█
 ```
 
-Run this yourself with `bun bench/versus`.
+Run this yourself with `node bench/versus`.
 
 ## License
 
