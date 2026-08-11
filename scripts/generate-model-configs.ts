@@ -5,10 +5,13 @@ import { readFileSync, writeFileSync, existsSync } from "fs"
 import { join } from "path"
 import { findBestTokenizer, type TokenizerResult } from "./find-best-tokenizer.ts"
 import * as encoding from "../src/encoding/index.ts"
+import { getOpencodeApiKey, isPublicApiKey, setupOpencodeProvider } from "./opencode.ts"
 
-if (!process.env.AI_GATEWAY_API_KEY) {
-    throw new Error("AI_GATEWAY_API_KEY is not set")
+const apiKey = getOpencodeApiKey()
+if (!apiKey) {
+    throw new Error("OPENCODE_API_KEY is not set")
 }
+setupOpencodeProvider(apiKey)
 
 // Manual encoding overrides - specify the encoding for models if known
 const ENCODING_OVERRIDES: Record<string, string> = {
@@ -23,64 +26,19 @@ const ENCODING_MULTIPLIER_OVERRIDES: Record<string, number> = {
 // Per-model content multiplier overrides - takes precedence over encoding overrides
 // Use this for models that need a different multiplier than others using the same encoding
 const MODEL_MULTIPLIER_OVERRIDES: Record<string, number> = {
-    // Google Gemini models - consistently undercount by ~8%
-    "google/gemini-2.0-flash": 1.08,
-    "google/gemini-2.0-flash-lite": 1.08,
-    "google/gemini-2.5-flash": 1.08,
-    "google/gemini-2.5-flash-lite": 1.08,
-    "google/gemini-2.5-pro": 1.08,
-    "google/gemini-3-pro-preview": 1.08,
-    // Preview models undercount more (~10-11%)
-    "google/gemini-2.5-flash-preview-09-2025": 1.11,
-    "google/gemini-2.5-flash-lite-preview-09-2025": 1.11,
+    // opencode free models using p50k_base over-count content by ~17-22%
+    "opencode/big-pickle": 0.83,
+    "opencode/laguna-s-2.1-free": 0.91,
+    "opencode/ling-3.0-tiny-free": 1.0,
+    "opencode/nemotron-3.5-lightning-free": 1.0,
+    "opencode/mimo-v2.5-free": 0.86,
 }
 
 const IGNORE_MODELS = [
-    "openai/gpt-3.5-turbo",
-    "openai/gpt-3.5-turbo-instruct",
-    "openai/gpt-4.1-nano",
-    "openai/o3-deep-research",
-
-    "google/gemma-2-9b",
-    "google/gemini-2.5-flash-image",
-    "google/gemini-2.5-flash-image-preview",
-    "google/gemini-3-pro-image",
-
-    "alibaba/qwen3-max-preview",
-    "alibaba/qwen3-vl-thinking",
-    "cohere/command-a",
-    
-    // Models that fail with API errors
-    "alibaba/qwen3-coder-30b-a3b",
-    "mistral/magistral-small-2506",
-    "mistral/ministral-3b",
-    "mistral/ministral-8b",
-    "mistral/pixtral-12b",
-    "mistral/mixtral-8x22b-instruct",
-    "morph/morph-v3-fast",
-    "perplexity/sonar-reasoning-pro",
-    "zai/glm-4.6",
-    
-    // Models that fail to find encoding or produce NaN values
-    "cohere/command-r",
-    "cohere/command-r-plus",
-    "deepseek/deepseek-v3.1-base",
-    "deepseek/deepseek-r1-distill-llama-70b",
-    "inception/mercury-coder-small",
-    "meituan/longcat-flash-thinking",
-    "meta/llama-3-70b",
-    "meta/llama-3-8b",
-    "meta/llama-3.1-70b",
-    "meta/llama-3.2-11b",
-    "meta/llama-3.2-1b",
-    "meta/llama-3.2-3b",
-    "meta/llama-3.2-90b",
-    "meta/llama-4-maverick",
-    "mistral/magistral-medium-2506",
-    "morph/morph-v3-large",
-    "perplexity/sonar",
-    "perplexity/sonar-pro",
-    "perplexity/sonar-reasoning",
+    // opencode free models listed in models.dev but unavailable on the API
+    "opencode/hy3-free",
+    "opencode/nemotron-3-ultra-free",
+    "opencode/north-mini-code-free",
 ]
 
 // Get tokenizer for a specific encoding
@@ -137,33 +95,81 @@ interface ApiModel {
     context_window: number
     max_tokens: number
     type: string
-    pricing: Record<string, string>
+    pricing: Record<string, number>
 }
 
-interface ApiResponse {
-    object: string
-    data: ApiModel[]
+interface ModelsDevModel {
+    id: string
+    name: string
+    status?: string
+    cost?: Record<string, number>
+    limit: {
+        context: number
+        input?: number
+        output: number
+    }
+}
+
+interface ModelsDevProvider {
+    id: string
+    name: string
+    models: Record<string, ModelsDevModel>
 }
 
 async function fetchModels(): Promise<ApiModel[]> {
-    console.log("🌐 Fetching models from AI Gateway...\n")
-    const response = await fetch("https://ai-gateway.vercel.sh/v1/models")
-    const data = await response.json() as ApiResponse
+    console.log("🌐 Fetching models from models.dev...\n")
+    const response = await fetch("https://models.dev/api.json")
+    const data = await response.json() as Record<string, ModelsDevProvider>
 
-    // Filter to only language models
-    const languageModels = data.data.filter(model => model.type === "language")
-    const filteredModels = languageModels.filter(model => !IGNORE_MODELS.includes(model.id))
-    console.log(`  Found ${filteredModels.length} language models\n`)
+    const isPublic = isPublicApiKey(getOpencodeApiKey())
 
-    return filteredModels
+    const models: ApiModel[] = []
+    for (const providerId of ["opencode", "opencode-go"]) {
+        const provider = data[providerId]
+        if (!provider) {
+            console.log(`  ⚠️ Provider ${providerId} not found in models.dev`)
+            continue
+        }
+        for (const model of Object.values(provider.models)) {
+            // Skip deprecated models
+            if (model.status === "deprecated") continue
+            // With the free-tier key, only free models (cost.input === 0) are available
+            if (isPublic && (model.cost?.input ?? 0) !== 0) continue
+
+            const pricing: Record<string, number> = {}
+            if (model.cost) {
+                pricing.input = model.cost.input ?? 0
+                pricing.output = model.cost.output ?? 0
+                if (model.cost.cache_read != null) pricing.input_cache_read = model.cost.cache_read
+                if (model.cost.cache_write != null) pricing.input_cache_write = model.cost.cache_write
+            }
+
+            models.push({
+                id: `${providerId}/${model.id}`,
+                name: model.name,
+                context_window: model.limit.context,
+                max_tokens: model.limit.output,
+                type: "language",
+                pricing,
+            })
+        }
+    }
+    console.log(`  Found ${models.length} models from opencode & opencode-go\n`)
+
+    return models
 }
 
 function loadExistingConfigs(): Record<string, ModelConfig> {
     const configPath = join(process.cwd(), "src", "models.json")
     if (existsSync(configPath)) {
         console.log("📂 Loading existing configs from models.json\n")
-        const content = readFileSync(configPath, "utf-8")
-        return JSON.parse(content)
+        try {
+            const content = readFileSync(configPath, "utf-8")
+            return JSON.parse(content)
+        } catch (error) {
+            console.log("⚠️  Could not load existing configs, starting fresh")
+            return {}
+        }
     }
     return {}
 }
@@ -303,10 +309,6 @@ async function measureModel(modelName: string, encoding: string, apiModel: ApiMo
 
     // Calculate all the overhead values
     
-    // baseOverhead is everything else in the first message (base conversation overhead)
-    // For the first message: total = baseOverhead + roleTokens + contentTokens
-    const baseOverhead = msgA - tokenizer.encode("user").length - tokenizer.encode("a").length
-    
     // Now calculate perMessage from with-tools measurements
     // Pattern 1: user -> assistant (with tools)
     const perMsg1WithTools = twoMsgsWithTools - msgAWithTools - tokenizer.encode("assistant").length - tokenizer.encode("b").length
@@ -332,6 +334,19 @@ async function measureModel(modelName: string, encoding: string, apiModel: ApiMo
         const perMessageValues = [perMsg1WithTools, perMsg2WithTools, perMsg1].filter(v => !isNaN(v))
         perMessage = Math.round(perMessageValues.reduce((a, b) => a + b, 0) / perMessageValues.length)
     }
+
+    // baseOverhead is everything else beyond per-message + role + content.
+    // Measured from the systemUser probe (system + user) rather than a bare
+    // user message: a system-less request makes some backends prepend a
+    // cached default system prompt (mimo 246 vs ~1, laguna 42 vs ~6), which
+    // pollutes the absolute base-overhead value. count() adds perMessage for
+    // EVERY message, so subtract it for the two probe messages here.
+    const baseOverhead = systemUser
+        - tokenizer.encode("system").length
+        - tokenizer.encode("x").length
+        - tokenizer.encode("user").length
+        - tokenizer.encode("a").length
+        - perMessage * 2
 
     const toolsExist = emptyTool - noTools - tokenizer.encode("x").length
     const perTool = twoTools - emptyTool - tokenizer.encode("y").length
@@ -388,10 +403,7 @@ async function measureModel(modelName: string, encoding: string, apiModel: ApiMo
     console.log(`  ✓ perNestedObject: ${perNestedObject}, perArrayOfObjects: ${perArrayOfObjects}`)
 
     // Parse pricing object - convert all values from strings to numbers
-    const pricing: Record<string, number> = {}
-    for (const [key, value] of Object.entries(apiModel.pricing)) {
-        pricing[key] = parseFloat(value)
-    }
+    const pricing: Record<string, number> = { ...apiModel.pricing }
 
     const tokens: any = {
         baseOverhead,
@@ -466,6 +478,9 @@ console.log("🚀 Generating model configs...\n")
 // Fetch models from API
 let apiModels = await fetchModels()
 
+// Apply IGNORE_MODELS filter
+apiModels = apiModels.filter(model => !IGNORE_MODELS.includes(model.id))
+
 // apiModels = apiModels.filter(m => m.id.startsWith("google/"))
 
 console.log(`🔍 Found ${apiModels.length} models`)
@@ -501,14 +516,27 @@ for (const apiModel of apiModels) {
             console.log(`✓ Reusing existing config for ${modelId}`)
 
             // Parse pricing object - convert all values from strings to numbers
-            const pricing: Record<string, number> = {}
-            for (const [key, value] of Object.entries(apiModel.pricing)) {
-                pricing[key] = parseFloat(value)
+            const pricing: Record<string, number> = { ...apiModel.pricing }
+
+            // Apply content multiplier overrides even when reusing, so the override
+            // tables stay the authoritative source for calibrated multipliers
+            // (measureModel applies them on the measurement path; reuse must too)
+            const tokens = { ...existingConfig.tokens }
+            let contentMultiplier = MODEL_MULTIPLIER_OVERRIDES[modelId]
+            let multiplierSource = "model"
+            if (!contentMultiplier) {
+                contentMultiplier = ENCODING_MULTIPLIER_OVERRIDES[existingConfig.encoding]
+                multiplierSource = "encoding"
+            }
+            if (contentMultiplier && contentMultiplier !== tokens.contentMultiplier) {
+                tokens.contentMultiplier = contentMultiplier
+                console.log(`  ✓ contentMultiplier: ${contentMultiplier} (from ${multiplierSource}: ${multiplierSource === "model" ? modelId : existingConfig.encoding})`)
             }
 
             // Update metadata that may have changed
             const updatedConfig = {
                 ...existingConfig,
+                tokens,
                 name: apiModel.name,
                 contextWindow: apiModel.context_window,
                 maxTokens: apiModel.max_tokens,

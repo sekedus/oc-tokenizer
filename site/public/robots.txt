@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://coder.github.io/ai-tokenizer/sitemap.xml
+Sitemap: https://sekedus.github.io/oc-tokenizer/sitemap.xml
 

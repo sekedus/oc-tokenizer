@@ -1,4 +1,4 @@
-import { models } from 'ai-tokenizer';
+import { models } from 'oc-tokenizer';
 import { OffscreenCanvasManager } from './offscreen-canvas-manager.js';
 
 // State
@@ -409,10 +409,10 @@ populateModels();
 // Don't setup canvas until a model is selected
 
 // Set a default model and example text
-const defaultModel = 'openai/gpt-5';
+const defaultModel = 'opencode/deepseek-v4-flash-free';
 if (models[defaultModel]) {
   // Set example text first
-  inputText.value = `Hello! This is the AI Tokenizer demo.
+  inputText.value = `Hello! This is the OC Tokenizer demo.
 
 Try selecting different models to see how tokenization differs.
 

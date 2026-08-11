@@ -1,4 +1,4 @@
-import Tokenizer from 'ai-tokenizer';
+import Tokenizer from 'oc-tokenizer';
 
 let currentTokenizer = null;
 let currentEncoding = null;
@@ -53,16 +53,16 @@ async function loadEncoding(encodingType) {
     let encodingModule;
     switch (encodingType) {
       case 'cl100k_base':
-        encodingModule = await import('ai-tokenizer/encoding/cl100k_base');
+        encodingModule = await import('oc-tokenizer/encoding/cl100k_base');
         break;
       case 'o200k_base':
-        encodingModule = await import('ai-tokenizer/encoding/o200k_base');
+        encodingModule = await import('oc-tokenizer/encoding/o200k_base');
         break;
       case 'p50k_base':
-        encodingModule = await import('ai-tokenizer/encoding/p50k_base');
+        encodingModule = await import('oc-tokenizer/encoding/p50k_base');
         break;
       case 'claude':
-        encodingModule = await import('ai-tokenizer/encoding/claude');
+        encodingModule = await import('oc-tokenizer/encoding/claude');
         break;
       default:
         throw new Error(`Unknown encoding: ${encodingType}`);

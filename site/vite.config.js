@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/ai-tokenizer/',
+  base: '/oc-tokenizer/',
   worker: {
     format: 'es'
   },

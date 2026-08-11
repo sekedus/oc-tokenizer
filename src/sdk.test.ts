@@ -8,6 +8,7 @@ import { count } from "./sdk.ts";
 import type { ModelMessage, ToolSet } from "ai";
 import { models, Tokenizer, type Model } from "./index.ts";
 import * as o200k from "./encoding/o200k_base.ts";
+import * as cl100k from "./encoding/cl100k_base.ts";
 import * as claude from "./encoding/claude.ts";
 import { z } from "zod";
 
@@ -99,134 +100,134 @@ const tools = {
 
 describe("ai-sdk", () => {
   const testCases = [
-    // gemini-2.5-pro
+    // deepseek-v4-flash-free
     {
-      model: "google/gemini-2.5-pro",
+      model: "opencode/deepseek-v4-flash-free",
       encoding: o200k,
       size: "small",
       withTools: false,
-      expected: 1,
+      expected: 3,
     },
     {
-      model: "google/gemini-2.5-pro",
+      model: "opencode/deepseek-v4-flash-free",
       encoding: o200k,
       size: "small",
       withTools: true,
-      expected: 11,
+      expected: 299,
     },
     {
-      model: "google/gemini-2.5-pro",
+      model: "opencode/deepseek-v4-flash-free",
       encoding: o200k,
       size: "medium",
       withTools: false,
-      expected: 22,
+      expected: 25,
     },
     {
-      model: "google/gemini-2.5-pro",
+      model: "opencode/deepseek-v4-flash-free",
       encoding: o200k,
       size: "medium",
       withTools: true,
-      expected: 62,
+      expected: 452,
     },
     {
-      model: "google/gemini-2.5-pro",
+      model: "opencode/deepseek-v4-flash-free",
       encoding: o200k,
       size: "large",
       withTools: false,
-      expected: 61,
+      expected: 68,
     },
     {
-      model: "google/gemini-2.5-pro",
+      model: "opencode/deepseek-v4-flash-free",
       encoding: o200k,
       size: "large",
       withTools: true,
-      expected: 187,
+      expected: 787,
     },
-    // gpt-5
+    // longcat-2.0-free
     {
-      model: "openai/gpt-5",
-      encoding: o200k,
+      model: "opencode/longcat-2.0-free",
+      encoding: cl100k,
       size: "small",
       withTools: false,
-      expected: 12,
+      expected: 4,
     },
     {
-      model: "openai/gpt-5",
-      encoding: o200k,
+      model: "opencode/longcat-2.0-free",
+      encoding: cl100k,
       size: "small",
       withTools: true,
-      expected: 50,
+      expected: 154,
     },
     {
-      model: "openai/gpt-5",
-      encoding: o200k,
+      model: "opencode/longcat-2.0-free",
+      encoding: cl100k,
       size: "medium",
       withTools: false,
-      expected: 36,
+      expected: 30,
     },
     {
-      model: "openai/gpt-5",
-      encoding: o200k,
+      model: "opencode/longcat-2.0-free",
+      encoding: cl100k,
       size: "medium",
       withTools: true,
-      expected: 127,
+      expected: 302,
     },
     {
-      model: "openai/gpt-5",
-      encoding: o200k,
+      model: "opencode/longcat-2.0-free",
+      encoding: cl100k,
       size: "large",
       withTools: false,
-      expected: 83,
+      expected: 79,
     },
     {
-      model: "openai/gpt-5",
-      encoding: o200k,
+      model: "opencode/longcat-2.0-free",
+      encoding: cl100k,
       size: "large",
       withTools: true,
-      expected: 291,
+      expected: 635,
     },
-    // claude-sonnet-4.5
+    // nemotron-3.5-lightning-free
     {
-      model: "anthropic/claude-sonnet-4.5",
+      model: "opencode/nemotron-3.5-lightning-free",
       encoding: claude,
       size: "small",
       withTools: false,
       expected: 11,
     },
     {
-      model: "anthropic/claude-sonnet-4.5",
+      model: "opencode/nemotron-3.5-lightning-free",
       encoding: claude,
       size: "small",
       withTools: true,
-      expected: 585,
+      expected: 288,
     },
     {
-      model: "anthropic/claude-sonnet-4.5",
+      model: "opencode/nemotron-3.5-lightning-free",
       encoding: claude,
       size: "medium",
       withTools: false,
-      expected: 37,
+      expected: 38,
     },
     {
-      model: "anthropic/claude-sonnet-4.5",
+      model: "opencode/nemotron-3.5-lightning-free",
       encoding: claude,
       size: "medium",
       withTools: true,
-      expected: 748,
+      expected: 486,
     },
     {
-      model: "anthropic/claude-sonnet-4.5",
+      model: "opencode/nemotron-3.5-lightning-free",
       encoding: claude,
       size: "large",
       withTools: false,
-      expected: 84,
+      expected: 89,
     },
     {
-      model: "anthropic/claude-sonnet-4.5",
+      model: "opencode/nemotron-3.5-lightning-free",
       encoding: claude,
       size: "large",
       withTools: true,
-      expected: 1106,
+      expected: 920,
     },
   ];
 
@@ -313,7 +314,7 @@ describe("ai-sdk", () => {
       },
     ];
 
-    const modelConfig = models["openai/gpt-5"] as Model;
+    const modelConfig = models["opencode/deepseek-v4-flash-free"] as Model;
     const tokenizer = new Tokenizer(o200k);
     const result = count({
       tokenizer,

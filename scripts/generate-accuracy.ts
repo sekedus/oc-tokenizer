@@ -7,10 +7,13 @@ import Tokenizer from "../src/tokenizer.ts";
 import { createHash } from "crypto";
 import { count } from "../src/sdk.ts";
 import * as encodings from "../src/encoding/index.ts";
+import { getOpencodeApiKey, setupOpencodeProvider } from "./opencode.ts";
 
-if (!process.env.AI_GATEWAY_API_KEY) {
-    throw new Error("No AI_GATEWAY_API_KEY");
+const apiKey = getOpencodeApiKey()
+if (!apiKey) {
+    throw new Error("No OPENCODE_API_KEY");
 }
+setupOpencodeProvider(apiKey)
 
 // Models to test
 const MODELS_TO_TEST: ModelName[] = Object.keys(models) as ModelName[];
@@ -109,8 +112,8 @@ interface AccuracyCache {
 function hashModelConfig(model: ModelName): string {
     const config = models[model] as Model;
     if (!config) return "";
-    // Hash only the token config parameters that affect counting
-    const relevantConfig = JSON.stringify(config.tokens);
+    // Hash the encoding plus token config parameters that affect counting
+    const relevantConfig = JSON.stringify({ encoding: config.encoding, tokens: config.tokens });
     return createHash("md5").update(relevantConfig).digest("hex").substring(0, 8);
 }
 
@@ -177,8 +180,7 @@ async function testModelAtScale(modelName: ModelName, targetTokens: number): Pro
                     { type: "text", text: fillTemplate("Additionally, can you help with {TECH1}?") }
                 ]
             });
-            // Gemini 3 Pro Preview requies thought signatures for tool calls :/
-        } else if (role === "assistant" && messageIdx % 13 === 3 && modelName !== "google/gemini-3-pro-preview") {
+        } else if (role === "assistant" && messageIdx % 13 === 3) {
             // Include tool calls in some assistant messages
             const toolCallId = `call${messageIdx.toString().padStart(5, '0')}`;
             messages.push({
@@ -330,9 +332,9 @@ async function generateAccuracyMetrics(cache: AccuracyCache): Promise<AccuracyCa
 function generateMarkdownTable(cache: AccuracyCache): { popularTable: string; fullTable: string } {
     // Popular models to highlight
     const popularModels: ModelName[] = [
-        "openai/gpt-5",
-        "anthropic/claude-opus-4.5",
-        "google/gemini-3-pro-preview",
+        "opencode/big-pickle",
+        "opencode/deepseek-v4-flash-free",
+        "opencode/laguna-s-2.1-free",
     ];
 
     // Generate popular models table

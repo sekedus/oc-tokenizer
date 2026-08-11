@@ -1,5 +1,5 @@
 /**
- * Comprehensive benchmark: ai-tokenizer vs other tokenizers
+ * Comprehensive benchmark: oc-tokenizer vs other tokenizers
  * 
  * Compares o200k_base encoding performance across:
  * - tiktoken (native/WASM implementation)
@@ -69,7 +69,7 @@ const tiktoken = get_encoding(ENCODING_NAME);
 
 // Initialization benchmarks
 group("initialization", () => {
-  bench("ai-tokenizer", () => new Tokenizer(o200k));
+  bench("oc-tokenizer", () => new Tokenizer(o200k));
   bench("tiktoken", () => {
     const enc = get_encoding(ENCODING_NAME);
     enc.free();
@@ -83,37 +83,37 @@ encode(texts.small);
 
 // Encoding benchmarks
 group("encode: small text (~13 chars)", () => {
-  bench("ai-tokenizer", () => aiTokenizer.encode(texts.small));
+  bench("oc-tokenizer", () => aiTokenizer.encode(texts.small));
   bench("gpt-tokenizer", () => encode(texts.small));
   bench("tiktoken", () => tiktoken.encode(texts.small));
 });
 
 group("encode: medium text (~4.5KB)", () => {
-  bench("ai-tokenizer", () => aiTokenizer.encode(texts.medium));
+  bench("oc-tokenizer", () => aiTokenizer.encode(texts.medium));
   bench("gpt-tokenizer", () => encode(texts.medium));
   bench("tiktoken", () => tiktoken.encode(texts.medium));
 });
 
 group("encode: large text (~500KB)", () => {
-  bench("ai-tokenizer", () => aiTokenizer.encode(texts.large));
+  bench("oc-tokenizer", () => aiTokenizer.encode(texts.large));
   bench("gpt-tokenizer", () => encode(texts.large));
   bench("tiktoken", () => tiktoken.encode(texts.large));
 });
 
 group("encode: unicode text", () => {
-  bench("ai-tokenizer", () => aiTokenizer.encode(texts.unicode));
+  bench("oc-tokenizer", () => aiTokenizer.encode(texts.unicode));
   bench("gpt-tokenizer", () => encode(texts.unicode));
   bench("tiktoken", () => tiktoken.encode(texts.unicode));
 });
 
 group("encode: code", () => {
-  bench("ai-tokenizer", () => aiTokenizer.encode(texts.code));
+  bench("oc-tokenizer", () => aiTokenizer.encode(texts.code));
   bench("gpt-tokenizer", () => encode(texts.code));
   bench("tiktoken", () => tiktoken.encode(texts.code));
 });
 
 group("encode: mixed content", () => {
-  bench("ai-tokenizer", () => aiTokenizer.encode(texts.mixed));
+  bench("oc-tokenizer", () => aiTokenizer.encode(texts.mixed));
   bench("gpt-tokenizer", () => encode(texts.mixed));
   bench("tiktoken", () => tiktoken.encode(texts.mixed));
 });
@@ -123,14 +123,14 @@ const tokens = aiTokenizer.encode(texts.large);
 const u32Array = new Uint32Array(tokens);
 
 group("decode: large token array", () => {
-  bench("ai-tokenizer", () => aiTokenizer.decode(tokens));
+  bench("oc-tokenizer", () => aiTokenizer.decode(tokens));
   bench("gpt-tokenizer", () => decode(tokens));
   bench("tiktoken", () => tiktoken.decode(u32Array));
 });
 
 // Token counting
 group("count: large text (~500KB)", () => {
-  bench("ai-tokenizer", () => aiTokenizer.encode(texts.large).length);
+  bench("oc-tokenizer", () => aiTokenizer.encode(texts.large).length);
   bench("gpt-tokenizer", () => encode(texts.large).length);
   bench("tiktoken", () => tiktoken.encode(texts.large).length);
 });

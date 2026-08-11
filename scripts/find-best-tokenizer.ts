@@ -4,6 +4,7 @@ import * as o200k from "../src/encoding/o200k_base.ts"
 import * as cl100k from "../src/encoding/cl100k_base.ts"
 import * as p50k from "../src/encoding/p50k_base.ts"
 import * as claude from "../src/encoding/claude.ts"
+import { getOpencodeApiKey, setupOpencodeProvider } from "./opencode.ts"
 
 // Test messages to compare - using diverse content types for more accurate differentiation
 // We include various content types to test how different tokenizers handle:
@@ -249,9 +250,11 @@ export async function findBestTokenizer(model: string, verbose = true): Promise<
 
 // CLI usage
 if (import.meta.main) {
-    if (!process.env.AI_GATEWAY_API_KEY) {
-        throw new Error("AI_GATEWAY_API_KEY is not set")
+    const apiKey = getOpencodeApiKey()
+    if (!apiKey) {
+        throw new Error("OPENCODE_API_KEY is not set")
     }
+    setupOpencodeProvider(apiKey)
 
     const model = process.argv[2]
     if (!model) {

@@ -1,12 +1,11 @@
 {
-  "name": "ai-tokenizer",
-  "version": "1.0.6",
+  "name": "oc-tokenizer",
+  "version": "1.0.0",
   "author": {
-    "name": "Kyle Carberry",
-    "email": "kyle@coder.com",
-    "url": "https://coder.com"
+    "name": "sekedus"
   },
   "devDependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.25",
     "@types/node": "^22",
     "ai": "^7.0.0",
     "base64-js": "^1.5.1",
@@ -123,7 +122,7 @@
       }
     }
   },
-  "description": "A faster than tiktoken tokenizer with first-class support for Vercel's AI SDK.",
+  "description": "A faster than tiktoken tokenizer with first-class support for opencode models.",
   "files": [
     "dist",
     "README.md"
