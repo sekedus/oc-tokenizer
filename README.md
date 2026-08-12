@@ -23,7 +23,7 @@ A faster than tiktoken tokenizer with first-class support for opencode models.
 
 [Try it on the website:](https://sekedus.github.io/oc-tokenizer/)
 
-[![Demo](./demo.png)](https://sekedus.github.io/oc-tokenizer/)
+[![Demo](https://raw.githubusercontent.com/sekedus/oc-tokenizer/main/demo.png)](https://sekedus.github.io/oc-tokenizer/)
 
 ## Usage
 
