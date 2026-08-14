@@ -138,5 +138,8 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "nanoid": "^5.1.16"
+  }
 }

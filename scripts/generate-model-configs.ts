@@ -36,7 +36,6 @@ const MODEL_MULTIPLIER_OVERRIDES: Record<string, number> = {
 
 const IGNORE_MODELS = [
     // opencode free models listed in models.dev but unavailable on the API
-    "opencode/hy3-free",
     "opencode/nemotron-3-ultra-free",
     "opencode/north-mini-code-free",
 ]

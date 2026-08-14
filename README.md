@@ -132,6 +132,7 @@ Validated against actual API responses with pseudo-random messages:
 |-------|-------------|------------|-------------|
 | opencode/big-pickle | 95.77% | 96.23% | 97.45% |
 | opencode/deepseek-v4-flash-free | 96.63% | 92.89% | 93.36% |
+| opencode/hy3-free | 96.60% | 98.56% | 98.91% |
 | opencode/laguna-s-2.1-free | 90.97% | 98.88% | 98.21% |
 | opencode/ling-3.0-tiny-free | 96.75% | 96.26% | 96.87% |
 | opencode/longcat-2.0-free | 99.61% | 92.40% | 91.13% |

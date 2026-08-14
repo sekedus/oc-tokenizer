@@ -43,6 +43,28 @@
       "accuracy": "93.36%"
     }
   },
+  "opencode/hy3-free": {
+    "model": "opencode/hy3-free",
+    "configHash": "c5c6a9e6",
+    "small": {
+      "predicted": 455,
+      "actual": 471,
+      "error": 16,
+      "accuracy": "96.60%"
+    },
+    "medium": {
+      "predicted": 4511,
+      "actual": 4447,
+      "error": 64,
+      "accuracy": "98.56%"
+    },
+    "large": {
+      "predicted": 45052,
+      "actual": 44566,
+      "error": 486,
+      "accuracy": "98.91%"
+    }
+  },
   "opencode/laguna-s-2.1-free": {
     "model": "opencode/laguna-s-2.1-free",
     "configHash": "ae277437",

@@ -50,6 +50,31 @@
       "input_cache_read": 0
     }
   },
+  "opencode/hy3-free": {
+    "encoding": "cl100k_base",
+    "tokens": {
+      "baseOverhead": 6,
+      "perMessage": 2,
+      "toolsExist": 177,
+      "perTool": 57,
+      "perDesc": 0,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 9,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 1
+    },
+    "name": "Hy3 Free",
+    "contextWindow": 190000,
+    "maxTokens": 64000,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
   "opencode/laguna-s-2.1-free": {
     "encoding": "p50k_base",
     "tokens": {
