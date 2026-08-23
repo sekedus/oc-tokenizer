@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/oc-tokenizer)](https://www.npmjs.com/package/oc-tokenizer)
 [![npm downloads](https://img.shields.io/npm/dm/oc-tokenizer)](https://www.npmjs.com/package/oc-tokenizer)
 
-> This project is a fork of [coder/ai-tokenizer](https://github.com/coder/ai-tokenizer/tree/9fa777aa591303a3aad26f3e5cd5c6c0cc8be6fc) with some modifications to support opencode models: opencode & opencode-go providers, `OPENCODE_API_KEY`, model configs sourced from `models.dev`, and per-model accuracy calibration.
+> This project is a fork of [coder/ai-tokenizer](https://github.com/coder/ai-tokenizer/tree/9fa777aa591303a3aad26f3e5cd5c6c0cc8be6fc) with some modifications to support opencode models: opencode & opencode-go providers, model configs sourced from `models.dev`, and per-model accuracy calibration.
 
 A faster than tiktoken tokenizer with first-class support for opencode models.
 
@@ -16,8 +16,8 @@ A faster than tiktoken tokenizer with first-class support for opencode models.
 | Model | ~500 tokens | ~5k tokens | ~50k tokens |
 |-------|-------------|------------|-------------|
 | opencode/big-pickle | 95.77% | 96.23% | 97.45% |
-| opencode/deepseek-v4-flash-free | 96.63% | 92.89% | 93.36% |
-| opencode/laguna-s-2.1-free | 90.97% | 98.88% | 98.21% |
+| opencode/hy3-free | 96.60% | 98.56% | 98.91% |
+| opencode/nemotron-3-ultra-free | 99.50% | 99.10% | 99.87% |
 
 <!-- POPULAR_MODELS_TABLE_END -->
 
@@ -42,7 +42,7 @@ import * as encoding from "oc-tokenizer/encoding";
 import { z } from "zod";
 
 // Find the respective model.
-const model = models["opencode/deepseek-v4-flash-free"];
+const model = models["opencode/big-pickle"];
 const tokenizer = new Tokenizer(encoding[model.encoding]);
 
 // Messages and tools to count.
@@ -137,7 +137,9 @@ Validated against actual API responses with pseudo-random messages:
 | opencode/ling-3.0-tiny-free | 96.75% | 96.26% | 96.87% |
 | opencode/longcat-2.0-free | 99.61% | 92.40% | 91.13% |
 | opencode/mimo-v2.5-free | 99.47% | 99.09% | 99.55% |
+| opencode/nemotron-3-ultra-free | 99.50% | 99.10% | 99.87% |
 | opencode/nemotron-3.5-lightning-free | 99.66% | 97.37% | 97.86% |
+| opencode/x-preview-f-free | 95.89% | 93.82% | 93.73% |
 
 <!-- ACCURACY_TABLE_END -->
 

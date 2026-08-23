@@ -247,7 +247,11 @@ async function testModelAtScale(modelName: ModelName, targetTokens: number): Pro
     });
     await result.consumeStream();
     const usage = await result.usage;
-    const actual = usage.inputTokens!;
+    const inputTokens = usage.inputTokens;
+    if (typeof inputTokens !== "number" || Number.isNaN(inputTokens)) {
+        throw new Error(`model returned no input token usage (inputTokens=${inputTokens})`);
+    }
+    const actual = inputTokens;
 
     return { predicted: predicted.total, actual };
 }
@@ -333,8 +337,8 @@ function generateMarkdownTable(cache: AccuracyCache): { popularTable: string; fu
     // Popular models to highlight
     const popularModels: ModelName[] = [
         "opencode/big-pickle",
-        "opencode/deepseek-v4-flash-free",
-        "opencode/laguna-s-2.1-free",
+        "opencode/hy3-free",
+        "opencode/nemotron-3-ultra-free",
     ];
 
     // Generate popular models table

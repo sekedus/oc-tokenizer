@@ -174,6 +174,31 @@
       "input_cache_read": 0
     }
   },
+  "opencode/nemotron-3-ultra-free": {
+    "encoding": "claude",
+    "tokens": {
+      "baseOverhead": 2,
+      "perMessage": 6,
+      "toolsExist": 241,
+      "perTool": 51,
+      "perDesc": 1,
+      "perFirstProp": 28,
+      "perAdditionalProp": 22,
+      "perPropDesc": 6,
+      "perEnum": 12,
+      "perNestedObject": -10,
+      "perArrayOfObjects": -17,
+      "contentMultiplier": 0.98
+    },
+    "name": "Nemotron 3 Ultra Free",
+    "contextWindow": 1000000,
+    "maxTokens": 128000,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
   "opencode/nemotron-3.5-lightning-free": {
     "encoding": "claude",
     "tokens": {
@@ -193,6 +218,31 @@
     "name": "Nemotron 3.5 Lightning Free",
     "contextWindow": 262144,
     "maxTokens": 262144,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
+  "opencode/x-preview-f-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 84,
+      "perMessage": 1,
+      "toolsExist": 136,
+      "perTool": 40,
+      "perDesc": 5,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 9,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.82
+    },
+    "name": "Ox Alpha Free (Unlimited)",
+    "contextWindow": 1000000,
+    "maxTokens": 131072,
     "pricing": {
       "input": 0,
       "output": 0,

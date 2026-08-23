@@ -174,5 +174,49 @@
       "error": 944,
       "accuracy": "97.86%"
     }
+  },
+  "opencode/nemotron-3-ultra-free": {
+    "model": "opencode/nemotron-3-ultra-free",
+    "configHash": "15c644dc",
+    "small": {
+      "predicted": 592,
+      "actual": 595,
+      "error": 3,
+      "accuracy": "99.50%"
+    },
+    "medium": {
+      "predicted": 4503,
+      "actual": 4463,
+      "error": 40,
+      "accuracy": "99.10%"
+    },
+    "large": {
+      "predicted": 45021,
+      "actual": 44961,
+      "error": 60,
+      "accuracy": "99.87%"
+    }
+  },
+  "opencode/x-preview-f-free": {
+    "model": "opencode/x-preview-f-free",
+    "configHash": "01dd70f7",
+    "small": {
+      "predicted": 490,
+      "actual": 511,
+      "error": 21,
+      "accuracy": "95.89%"
+    },
+    "medium": {
+      "predicted": 4500,
+      "actual": 4238,
+      "error": 262,
+      "accuracy": "93.82%"
+    },
+    "large": {
+      "predicted": 45016,
+      "actual": 42359,
+      "error": 2657,
+      "accuracy": "93.73%"
+    }
   }
 }

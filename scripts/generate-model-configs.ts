@@ -31,13 +31,14 @@ const MODEL_MULTIPLIER_OVERRIDES: Record<string, number> = {
     "opencode/laguna-s-2.1-free": 0.91,
     "opencode/ling-3.0-tiny-free": 1.0,
     "opencode/nemotron-3.5-lightning-free": 1.0,
+    "opencode/nemotron-3-ultra-free": 0.98,
     "opencode/mimo-v2.5-free": 0.86,
+    "opencode/x-preview-f-free": 0.82,
 }
 
 const IGNORE_MODELS = [
     // opencode free models listed in models.dev but unavailable on the API
-    "opencode/nemotron-3-ultra-free",
-    "opencode/north-mini-code-free",
+    "opencode/muse-spark-1.2-contributor-free",
 ]
 
 // Get tokenizer for a specific encoding
@@ -123,7 +124,9 @@ async function fetchModels(): Promise<ApiModel[]> {
     const isPublic = isPublicApiKey(getOpencodeApiKey())
 
     const models: ApiModel[] = []
-    for (const providerId of ["opencode", "opencode-go"]) {
+    // With the free-tier key, only the zen provider (opencode) is reachable;
+    // opencode-go models are not available, so skip them to avoid failed measurements.
+    for (const providerId of isPublic ? ["opencode"] : ["opencode", "opencode-go"]) {
         const provider = data[providerId]
         if (!provider) {
             console.log(`  ⚠️ Provider ${providerId} not found in models.dev`)

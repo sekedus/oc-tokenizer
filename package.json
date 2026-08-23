@@ -1,30 +1,17 @@
 {
   "name": "oc-tokenizer",
   "version": "1.0.1",
+  "description": "A faster than tiktoken tokenizer with first-class support for opencode models.",
+  "homepage": "https://github.com/sekedus/oc-tokenizer?tab=readme-ov-file",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sekedus/oc-tokenizer.git"
+  },
+  "license": "MIT",
   "author": {
     "name": "sekedus"
   },
-  "devDependencies": {
-    "@ai-sdk/openai-compatible": "^3.0.25",
-    "@types/node": "^22",
-    "ai": "^7.0.0",
-    "base64-js": "^1.5.1",
-    "gpt-tokenizer": "^3.0.1",
-    "mitata": "^1.0.34",
-    "prettier": "^3.6.2",
-    "tiktoken": "^1.0.22",
-    "tsdown": "^0.15.6",
-    "typescript": "^5.9.3",
-    "vitest": "^3"
-  },
-  "peerDependencies": {
-    "ai": "^7.0.0"
-  },
-  "peerDependenciesMeta": {
-    "ai": {
-      "optional": true
-    }
-  },
+  "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -122,15 +109,10 @@
       }
     }
   },
-  "description": "A faster than tiktoken tokenizer with first-class support for opencode models.",
   "files": [
     "dist",
     "README.md"
   ],
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "bench": "node bench/versus.ts",
     "build": "tsdown",
@@ -138,8 +120,31 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
-  "type": "module",
   "dependencies": {
     "nanoid": "^5.1.16"
+  },
+  "devDependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.25",
+    "@types/node": "^22",
+    "ai": "^7.0.0",
+    "base64-js": "^1.5.1",
+    "gpt-tokenizer": "^3.0.1",
+    "mitata": "^1.0.34",
+    "prettier": "^3.6.2",
+    "tiktoken": "^1.0.22",
+    "tsdown": "^0.15.6",
+    "typescript": "^5.9.3",
+    "vitest": "^3"
+  },
+  "peerDependencies": {
+    "ai": "^7.0.0"
+  },
+  "peerDependenciesMeta": {
+    "ai": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

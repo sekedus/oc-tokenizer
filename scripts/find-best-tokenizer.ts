@@ -124,7 +124,11 @@ export async function findBestTokenizer(model: string, verbose = true): Promise<
         })
         await result.consumeStream() // Wait for stream to complete
         const usage = await result.usage // Get token usage stats
-        return { message, actualTokens: usage.inputTokens! }
+        const actualTokens = usage.inputTokens
+        if (typeof actualTokens !== "number" || Number.isNaN(actualTokens)) {
+            throw new Error(`model returned no input token usage (inputTokens=${actualTokens})`)
+        }
+        return { message, actualTokens }
     })
 
     // Wait for all API calls to complete
