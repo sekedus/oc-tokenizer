@@ -4,7 +4,7 @@ import * as o200k from "../src/encoding/o200k_base.ts"
 import * as cl100k from "../src/encoding/cl100k_base.ts"
 import * as p50k from "../src/encoding/p50k_base.ts"
 import * as claude from "../src/encoding/claude.ts"
-import { getOpencodeApiKey, setupOpencodeProvider } from "./opencode.ts"
+import { getOpencodeApiKey, setupProvider, getFreeTierShim } from "./providers.ts"
 
 // Test messages to compare - using diverse content types for more accurate differentiation
 // We include various content types to test how different tokenizers handle:
@@ -115,12 +115,16 @@ export async function findBestTokenizer(model: string, verbose = true): Promise<
         console.log(`Running ${allTestMessages.length} API calls in parallel for faster results...\n`)
     }
 
+    // Free-tier shim (wire-only headers + built-in tools) when available.
+    const shim = await getFreeTierShim(model)
     // Start all API calls in parallel
     const apiCalls = allTestMessages.map(async (message) => {
         const result = streamText({
             model,
             messages: [message],
             maxOutputTokens: 16, // Small output since we only care about input tokens
+            tools: shim ? { ...shim.tools } : undefined,
+            headers: shim?.headers,
         })
         await result.consumeStream() // Wait for stream to complete
         const usage = await result.usage // Get token usage stats
@@ -258,7 +262,7 @@ if (import.meta.main) {
     if (!apiKey) {
         throw new Error("OPENCODE_API_KEY is not set")
     }
-    setupOpencodeProvider(apiKey)
+    setupProvider(apiKey)
 
     const model = process.argv[2]
     if (!model) {

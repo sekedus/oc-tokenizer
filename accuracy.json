@@ -87,6 +87,28 @@
       "accuracy": "98.21%"
     }
   },
+  "opencode/ling-3.0-flash-fin-free": {
+    "model": "opencode/ling-3.0-flash-fin-free",
+    "configHash": "f17f8b93",
+    "small": {
+      "predicted": 505,
+      "actual": 524,
+      "error": 19,
+      "accuracy": "96.37%"
+    },
+    "medium": {
+      "predicted": 4569,
+      "actual": 4531,
+      "error": 38,
+      "accuracy": "99.16%"
+    },
+    "large": {
+      "predicted": 45034,
+      "actual": 44546,
+      "error": 488,
+      "accuracy": "98.90%"
+    }
+  },
   "opencode/ling-3.0-tiny-free": {
     "model": "opencode/ling-3.0-tiny-free",
     "configHash": "fdfcd7b8",
@@ -151,6 +173,50 @@
       "actual": 44802,
       "error": 202,
       "accuracy": "99.55%"
+    }
+  },
+  "opencode/muse-spark-1.3-contributor-free": {
+    "model": "opencode/muse-spark-1.3-contributor-free",
+    "configHash": "736cdad6",
+    "small": {
+      "predicted": 1076,
+      "actual": 1095,
+      "error": 19,
+      "accuracy": "98.26%"
+    },
+    "medium": {
+      "predicted": 4563,
+      "actual": 4308,
+      "error": 255,
+      "accuracy": "94.08%"
+    },
+    "large": {
+      "predicted": 45068,
+      "actual": 42008,
+      "error": 3060,
+      "accuracy": "92.72%"
+    }
+  },
+  "opencode/muse-spark-1.2-contributor-free": {
+    "model": "opencode/muse-spark-1.2-contributor-free",
+    "configHash": "736cdad6",
+    "small": {
+      "predicted": 1076,
+      "actual": 1095,
+      "error": 19,
+      "accuracy": "98.26%"
+    },
+    "medium": {
+      "predicted": 4571,
+      "actual": 4317,
+      "error": 254,
+      "accuracy": "94.12%"
+    },
+    "large": {
+      "predicted": 45007,
+      "actual": 41968,
+      "error": 3039,
+      "accuracy": "92.76%"
     }
   },
   "opencode/nemotron-3.5-lightning-free": {

@@ -5,13 +5,13 @@ import { readFileSync, writeFileSync, existsSync } from "fs"
 import { join } from "path"
 import { findBestTokenizer, type TokenizerResult } from "./find-best-tokenizer.ts"
 import * as encoding from "../src/encoding/index.ts"
-import { getOpencodeApiKey, isPublicApiKey, setupOpencodeProvider } from "./opencode.ts"
+import { getOpencodeApiKey, isPublicApiKey, resolveProvider, setLiveResolutions, setupProvider, getFreeTierShim, isDefaultProvider, type NpmProvider, type ResolvedProvider } from "./providers.ts"
 
 const apiKey = getOpencodeApiKey()
 if (!apiKey) {
     throw new Error("OPENCODE_API_KEY is not set")
 }
-setupOpencodeProvider(apiKey)
+setupProvider(apiKey)
 
 // Manual encoding overrides - specify the encoding for models if known
 const ENCODING_OVERRIDES: Record<string, string> = {
@@ -30,15 +30,18 @@ const MODEL_MULTIPLIER_OVERRIDES: Record<string, number> = {
     "opencode/big-pickle": 0.83,
     "opencode/laguna-s-2.1-free": 0.91,
     "opencode/ling-3.0-tiny-free": 1.0,
+    "opencode/ling-3.0-flash-fin-free": 0.976,
     "opencode/nemotron-3.5-lightning-free": 1.0,
     "opencode/nemotron-3-ultra-free": 0.98,
     "opencode/mimo-v2.5-free": 0.86,
+    "opencode/muse-spark-1.2-contributor-free": 0.83,
+    "opencode/muse-spark-1.3-contributor-free": 0.83,
     "opencode/x-preview-f-free": 0.82,
 }
 
-const IGNORE_MODELS = [
-    // opencode free models listed in models.dev but unavailable on the API
-    "opencode/muse-spark-1.2-contributor-free",
+const IGNORE_MODELS: string[] = [
+    // 500 Internal server error
+    "opencode/jev-1.13-free",
 ]
 
 // Get tokenizer for a specific encoding
@@ -51,11 +54,17 @@ const getTokenizer = (encodingName: string): Tokenizer => {
 }
 
 const run = async (model: string, messages: any[], tools?: any) => {
+    // Free-tier shim: when the local helper file exists and the model is
+    // free, the endpoint requires extra headers + the 4 built-in tools.
+    // Shim tools stay on the wire only — never pass them to count(), since
+    // their cost is already baked into the measured baseOverhead.
+    const shim = await getFreeTierShim(model)
     const result = streamText({
         model,
         messages,
         maxOutputTokens: 16,
-        tools,
+        tools: shim ? { ...shim.tools, ...tools } : tools,
+        headers: shim?.headers,
         // These measurement scripts intentionally pass system messages inside
         // `messages` to measure their token overhead. The messages are trusted
         // server-side data, so opt in to the v7 default that rejects them.
@@ -63,11 +72,18 @@ const run = async (model: string, messages: any[], tools?: any) => {
     })
     await result.consumeStream()
     const usage = await result.usage
-    return usage.inputTokens!
+    const inputTokens = usage.inputTokens
+    if (typeof inputTokens !== "number" || Number.isNaN(inputTokens)) {
+        throw new Error(`model returned no input token usage (inputTokens=${inputTokens})`)
+    }
+    return inputTokens
 }
 
 interface ModelConfig {
     encoding: string
+    // Only present when routing differs from the default
+    // (`@ai-sdk/openai-compatible` + zen/go base URL by key prefix).
+    provider?: ResolvedProvider
     tokens: {
         baseOverhead: number
         perMessage: number
@@ -96,6 +112,7 @@ interface ApiModel {
     max_tokens: number
     type: string
     pricing: Record<string, number>
+    provider: ResolvedProvider
 }
 
 interface ModelsDevModel {
@@ -108,11 +125,17 @@ interface ModelsDevModel {
         input?: number
         output: number
     }
+    provider?: {
+        npm?: string
+        api?: string
+    }
 }
 
 interface ModelsDevProvider {
     id: string
     name: string
+    npm?: string
+    api?: string
     models: Record<string, ModelsDevModel>
 }
 
@@ -153,10 +176,21 @@ async function fetchModels(): Promise<ApiModel[]> {
                 max_tokens: model.limit.output,
                 type: "language",
                 pricing,
+                // Per-model `provider.npm` takes priority over the
+                // opencode/opencode-go provider-level `npm`.
+                provider: resolveProvider(provider, model),
             })
         }
     }
-    console.log(`  Found ${models.length} models from opencode & opencode-go\n`)
+    const perNpm: Record<string, number> = {}
+    for (const model of models) {
+        perNpm[model.provider.npm] = (perNpm[model.provider.npm] ?? 0) + 1
+    }
+    console.log(`  Found ${models.length} models from opencode & opencode-go`)
+    for (const [npm, count] of Object.entries(perNpm)) {
+        console.log(`    ${npm}: ${count}`)
+    }
+    console.log()
 
     return models
 }
@@ -437,8 +471,15 @@ async function measureModel(modelName: string, encoding: string, apiModel: ApiMo
         console.log(`  ✓ contentMultiplier: ${contentMultiplier} (from ${multiplierSource}: ${multiplierSource === "model" ? modelName : encoding})`)
     }
     
+    console.log(`  ✓ provider: ${apiModel.provider.npm} (${apiModel.provider.api})`)
+
     return {
         encoding,
+        // Store routing only when it differs from the default, so
+        // models.json stays clean for the common case.
+        ...(isDefaultProvider(apiModel.id, apiModel.provider)
+            ? {}
+            : { provider: apiModel.provider }),
         tokens,
         name: apiModel.name,
         contextWindow: apiModel.context_window,
@@ -483,12 +524,31 @@ let apiModels = await fetchModels()
 // Apply IGNORE_MODELS filter
 apiModels = apiModels.filter(model => !IGNORE_MODELS.includes(model.id))
 
+// Register live per-model resolutions so measurement routes each model
+// through its resolved SDK package (model `provider.npm` first).
+// Pricing rides along so the free-tier shim can detect free models.
+setLiveResolutions(apiModels.map((model) => ({ id: model.id, provider: model.provider, pricing: model.pricing })))
+
 // apiModels = apiModels.filter(m => m.id.startsWith("google/"))
 
 console.log(`🔍 Found ${apiModels.length} models`)
 
 // Load existing configs
 let configs = loadExistingConfigs()
+
+// Deprecated models with existing configs (and accuracy history) are
+// preserved untouched: they are absent from apiModels, so the loop below
+// never rewrites or deletes them.
+const preserved = Object.keys(configs).filter(
+    (id) => !apiModels.some((m) => m.id === id),
+)
+if (preserved.length > 0) {
+    console.log(
+        `🗄️  Preserving ${preserved.length} existing config(s) not in fetch list (deprecated):`,
+    )
+    for (const id of preserved) console.log(`    ${id}`)
+    console.log()
+}
 
 // Process each model
 for (const apiModel of apiModels) {
@@ -535,14 +595,21 @@ for (const apiModel of apiModels) {
                 console.log(`  ✓ contentMultiplier: ${contentMultiplier} (from ${multiplierSource}: ${multiplierSource === "model" ? modelId : existingConfig.encoding})`)
             }
 
-            // Update metadata that may have changed
-            const updatedConfig = {
+            // Update metadata that may have changed. Routing is stored
+            // only when it differs from the default; a model that moved
+            // back to the default gets the block removed.
+            const updatedConfig: ModelConfig = {
                 ...existingConfig,
                 tokens,
                 name: apiModel.name,
                 contextWindow: apiModel.context_window,
                 maxTokens: apiModel.max_tokens,
                 pricing,
+            }
+            if (isDefaultProvider(apiModel.id, apiModel.provider)) {
+                delete updatedConfig.provider
+            } else {
+                updatedConfig.provider = apiModel.provider
             }
             
             configs[modelId] = updatedConfig

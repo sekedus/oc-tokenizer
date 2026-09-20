@@ -100,6 +100,31 @@
       "input_cache_read": 0
     }
   },
+  "opencode/ling-3.0-flash-fin-free": {
+    "encoding": "claude",
+    "tokens": {
+      "baseOverhead": 7,
+      "perMessage": 6,
+      "toolsExist": 219,
+      "perTool": 71,
+      "perDesc": 0,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 10,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.976
+    },
+    "name": "Ling 3.0 Flash Fin Free",
+    "contextWindow": 262144,
+    "maxTokens": 32768,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
   "opencode/ling-3.0-tiny-free": {
     "encoding": "claude",
     "tokens": {
@@ -168,6 +193,64 @@
     "name": "MiMo V2.5 Free",
     "contextWindow": 200000,
     "maxTokens": 32000,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
+  "opencode/muse-spark-1.3-contributor-free": {
+    "encoding": "p50k_base",
+    "provider": {
+      "npm": "@ai-sdk/openai",
+      "api": "https://opencode.ai/zen/v1"
+    },
+    "tokens": {
+      "baseOverhead": 757,
+      "perMessage": 4,
+      "toolsExist": 47,
+      "perTool": 47,
+      "perDesc": 1,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 10,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.83
+    },
+    "name": "Muse Spark 1.3 Free",
+    "contextWindow": 1048576,
+    "maxTokens": 131072,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
+  "opencode/muse-spark-1.2-contributor-free": {
+    "encoding": "p50k_base",
+    "provider": {
+      "npm": "@ai-sdk/openai",
+      "api": "https://opencode.ai/zen/v1"
+    },
+    "tokens": {
+      "baseOverhead": 757,
+      "perMessage": 4,
+      "toolsExist": 47,
+      "perTool": 47,
+      "perDesc": 1,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 10,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.83
+    },
+    "name": "Muse Spark 1.2 Free",
+    "contextWindow": 1048576,
+    "maxTokens": 131072,
     "pricing": {
       "input": 0,
       "output": 0,

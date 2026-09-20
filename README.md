@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/oc-tokenizer)](https://www.npmjs.com/package/oc-tokenizer)
 [![npm downloads](https://img.shields.io/npm/dm/oc-tokenizer)](https://www.npmjs.com/package/oc-tokenizer)
 
-> This project is a fork of [coder/ai-tokenizer](https://github.com/coder/ai-tokenizer/tree/9fa777aa591303a3aad26f3e5cd5c6c0cc8be6fc) with some modifications to support opencode models: opencode & opencode-go providers, model configs sourced from `models.dev`, and per-model accuracy calibration.
+> This project is a fork of [coder/ai-tokenizer](https://github.com/coder/ai-tokenizer/tree/9fa777aa591303a3aad26f3e5cd5c6c0cc8be6fc) with some modifications to support opencode models: opencode & opencode-go providers routed per model through `@ai-sdk/openai`, `@ai-sdk/openai-compatible`, `@ai-sdk/anthropic`, and `@ai-sdk/google`, model configs sourced from `models.dev`, and per-model accuracy calibration.
 
 A faster than tiktoken tokenizer with first-class support for opencode models.
 
@@ -16,7 +16,7 @@ A faster than tiktoken tokenizer with first-class support for opencode models.
 | Model | ~500 tokens | ~5k tokens | ~50k tokens |
 |-------|-------------|------------|-------------|
 | opencode/big-pickle | 95.77% | 96.23% | 97.45% |
-| opencode/hy3-free | 96.60% | 98.56% | 98.91% |
+| opencode/mimo-v2.5-free | 99.47% | 99.09% | 99.55% |
 | opencode/nemotron-3-ultra-free | 99.50% | 99.10% | 99.87% |
 
 <!-- POPULAR_MODELS_TABLE_END -->
@@ -134,9 +134,12 @@ Validated against actual API responses with pseudo-random messages:
 | opencode/deepseek-v4-flash-free | 96.63% | 92.89% | 93.36% |
 | opencode/hy3-free | 96.60% | 98.56% | 98.91% |
 | opencode/laguna-s-2.1-free | 90.97% | 98.88% | 98.21% |
+| opencode/ling-3.0-flash-fin-free | 96.37% | 99.16% | 98.90% |
 | opencode/ling-3.0-tiny-free | 96.75% | 96.26% | 96.87% |
 | opencode/longcat-2.0-free | 99.61% | 92.40% | 91.13% |
 | opencode/mimo-v2.5-free | 99.47% | 99.09% | 99.55% |
+| opencode/muse-spark-1.2-contributor-free | 98.26% | 94.12% | 92.76% |
+| opencode/muse-spark-1.3-contributor-free | 98.26% | 94.08% | 92.72% |
 | opencode/nemotron-3-ultra-free | 99.50% | 99.10% | 99.87% |
 | opencode/nemotron-3.5-lightning-free | 99.66% | 97.37% | 97.86% |
 | opencode/x-preview-f-free | 95.89% | 93.82% | 93.73% |
@@ -295,7 +298,7 @@ Development and tooling scripts live in `scripts/`. Run them with plain Node (22
 | Script | Description |
 |--------|-------------|
 | `generate-encodings.ts` | Generates the optimized encoding modules in `src/encoding/` from the JSON token tables, using a dual-storage format (string-based map for UTF-8 tokens, sorted binary search for the rest, and string-based decoding where possible). |
-| `generate-model-configs.ts` | Fetches live model data from `models.dev/api.json` and regenerates `src/models.json` (model metadata and pricing). Requires `OPENCODE_API_KEY`. |
+| `generate-model-configs.ts` | Fetches live model data from `models.dev/api.json` (resolving each model to its AI SDK package via model `provider.npm` first, then the opencode/opencode-go provider `npm`) and regenerates `src/models.json` (model metadata, provider routing, and pricing). Requires `OPENCODE_API_KEY`. |
 | `generate-accuracy.ts` | Measures token-count accuracy per model against actual API responses and regenerates the [accuracy table](#accuracy) in this README plus `accuracy.json`. |
 
 Usage: `node scripts/<script>.ts`. Scripts that make live API calls need `OPENCODE_API_KEY`.

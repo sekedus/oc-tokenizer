@@ -7,13 +7,13 @@ import Tokenizer from "../src/tokenizer.ts";
 import { createHash } from "crypto";
 import { count } from "../src/sdk.ts";
 import * as encodings from "../src/encoding/index.ts";
-import { getOpencodeApiKey, setupOpencodeProvider } from "./opencode.ts";
+import { getOpencodeApiKey, setupProvider, getFreeTierShim } from "./providers.ts";
 
 const apiKey = getOpencodeApiKey()
 if (!apiKey) {
     throw new Error("No OPENCODE_API_KEY");
 }
-setupOpencodeProvider(apiKey)
+setupProvider(apiKey)
 
 // Models to test
 const MODELS_TO_TEST: ModelName[] = Object.keys(models) as ModelName[];
@@ -235,10 +235,15 @@ async function testModelAtScale(modelName: ModelName, targetTokens: number): Pro
     const tokenizer = new Tokenizer(encodings[modelConfig.encoding]);
     const predicted = count({ tokenizer, messages, tools, model: modelConfig });
 
+    // Free-tier shim: extra headers + built-in tools on the wire only;
+    // `predicted` above is computed without them, matching how measureModel
+    // bakes their cost into baseOverhead.
+    const shim = await getFreeTierShim(modelName);
     const result = streamText({
         model: modelName,
         messages,
-        tools,
+        tools: shim ? { ...shim.tools, ...tools } : tools,
+        headers: shim?.headers,
         maxOutputTokens: 16,
         // This measurement script intentionally passes a system message inside
         // `messages` to measure its token overhead. The messages are trusted
@@ -337,7 +342,7 @@ function generateMarkdownTable(cache: AccuracyCache): { popularTable: string; fu
     // Popular models to highlight
     const popularModels: ModelName[] = [
         "opencode/big-pickle",
-        "opencode/hy3-free",
+        "opencode/mimo-v2.5-free",
         "opencode/nemotron-3-ultra-free",
     ];
 

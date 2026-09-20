@@ -357,4 +357,23 @@ describe("ai-sdk", () => {
     // Verify the large tool result is reflected in the overall total
     expect(result.total).toBeGreaterThan(40000);
   });
+
+  test("every model resolves to a supported provider", () => {
+    for (const [name, model] of Object.entries(models)) {
+      // Absent = default (`@ai-sdk/openai-compatible` + zen/go base URL).
+      const provider = (model as Model).provider ?? {
+        npm: "@ai-sdk/openai-compatible",
+        api: name.startsWith("opencode-go/")
+          ? "https://opencode.ai/zen/go/v1"
+          : "https://opencode.ai/zen/v1",
+      };
+      expect([
+        "@ai-sdk/openai",
+        "@ai-sdk/openai-compatible",
+        "@ai-sdk/anthropic",
+        "@ai-sdk/google",
+      ]).toContain(provider.npm);
+      expect(provider.api).toMatch(/^https:\/\//);
+    }
+  });
 });

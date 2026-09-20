@@ -1,35 +1,26 @@
-import { readFileSync, existsSync } from "fs"
-import { join } from "path"
-import { createOpenAICompatible } from "@ai-sdk/openai-compatible"
-
 /**
- * Load OPENCODE_API_KEY from the .env file first, falling back to the
- * system environment if not present.
+ * Thin re-export kept for backward compatibility during migration.
+ * New code should import from `./providers.ts` directly.
  */
-export function getOpencodeApiKey(): string | undefined {
-    const envPath = join(process.cwd(), ".env")
-    if (existsSync(envPath)) {
-        const content = readFileSync(envPath, "utf-8")
-        for (const line of content.split(/\r?\n/)) {
-            const trimmed = line.trim()
-            if (!trimmed || trimmed.startsWith("#")) continue
-            const eq = trimmed.indexOf("=")
-            if (eq === -1) continue
-            if (trimmed.slice(0, eq).trim() === "OPENCODE_API_KEY") {
-                return trimmed.slice(eq + 1).trim()
-            }
-        }
-    }
-    return process.env.OPENCODE_API_KEY
-}
-
-export function isPublicApiKey(key: string | undefined): boolean {
-    return key === String.fromCharCode(112, 117, 98, 108, 105, 99)
-}
+export {
+    getOpencodeApiKey,
+    isPublicApiKey,
+    resolveProvider,
+    resolveModelProvider,
+    setLiveResolutions,
+    getLanguageModel,
+    setupProvider,
+    SUPPORTED_NPM_PROVIDERS,
+} from "./providers.ts"
+export type { NpmProvider, ResolvedProvider } from "./providers.ts"
+import { createOpenAICompatible } from "@ai-sdk/openai-compatible"
 
 /**
  * Configure the AI SDK default provider to route opencode (zen) and
  * opencode-go models to their respective base URLs.
+ *
+ * @deprecated Use `setupProvider` from `./providers.ts`, which routes each
+ * model through its resolved SDK package.
  */
 export function setupOpencodeProvider(apiKey: string): void {
     const zen = createOpenAICompatible({

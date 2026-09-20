@@ -14,6 +14,16 @@ type ModelWithTypedEncoding<T extends ModelName = ModelName> = Omit<
   "encoding"
 > & {
   encoding: keyof typeof encodings;
+  // Optional per-model routing override. Absent = default
+  // (`@ai-sdk/openai-compatible` + zen/go base URL by key prefix).
+  provider?: {
+    npm:
+      | "@ai-sdk/openai"
+      | "@ai-sdk/openai-compatible"
+      | "@ai-sdk/anthropic"
+      | "@ai-sdk/google";
+    api: string;
+  };
 };
 
 export type Model<T extends ModelName = ModelName> = ModelWithTypedEncoding<T>;
