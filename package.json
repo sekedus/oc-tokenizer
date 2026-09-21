@@ -127,7 +127,7 @@
     "@ai-sdk/anthropic": "^4.0.58",
     "@ai-sdk/google": "^4.0.76",
     "@ai-sdk/openai": "^4.0.71",
-    "@ai-sdk/openai-compatible": "^3.0.51",
+    "@ai-sdk/openai-compatible": "^3.0.53",
     "@types/node": "^22.20.3",
     "ai": "^7.0.105",
     "base64-js": "^1.5.1",
@@ -136,7 +136,7 @@
     "prettier": "^3.9.7",
     "tiktoken": "^1.0.22",
     "tsdown": "^0.23.0",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
     "vitest": "^5.0.1"
   },
   "peerDependencies": {
