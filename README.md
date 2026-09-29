@@ -137,11 +137,14 @@ Validated against actual API responses with pseudo-random messages:
 | opencode/ling-3.0-flash-fin-free | 96.37% | 99.16% | 98.90% |
 | opencode/ling-3.0-tiny-free | 96.75% | 96.26% | 96.87% |
 | opencode/longcat-2.0-free | 99.61% | 92.40% | 91.13% |
+| opencode/longcat-2.5-preview-free | 97.81% | 92.89% | 91.19% |
 | opencode/mimo-v2.5-free | 99.47% | 99.09% | 99.55% |
+| opencode/mimo-v2.6-flash-free | 96.85% | 99.29% | 98.96% |
 | opencode/muse-spark-1.2-contributor-free | 98.26% | 94.12% | 92.76% |
 | opencode/muse-spark-1.3-contributor-free | 98.26% | 94.08% | 92.72% |
 | opencode/nemotron-3-ultra-free | 99.50% | 99.10% | 99.87% |
 | opencode/nemotron-3.5-lightning-free | 99.66% | 97.37% | 97.86% |
+| opencode/space-bunny-free | 97.73% | 98.45% | 97.98% |
 | opencode/x-preview-f-free | 95.89% | 93.82% | 93.73% |
 
 <!-- ACCURACY_TABLE_END -->

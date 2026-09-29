@@ -34,8 +34,10 @@ const MODEL_MULTIPLIER_OVERRIDES: Record<string, number> = {
     "opencode/nemotron-3.5-lightning-free": 1.0,
     "opencode/nemotron-3-ultra-free": 0.98,
     "opencode/mimo-v2.5-free": 0.86,
+    "opencode/mimo-v2.6-flash-free": 0.86,
     "opencode/muse-spark-1.2-contributor-free": 0.83,
     "opencode/muse-spark-1.3-contributor-free": 0.83,
+    "opencode/space-bunny-free": 0.80,
     "opencode/x-preview-f-free": 0.82,
 }
 

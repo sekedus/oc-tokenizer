@@ -174,6 +174,31 @@
       "input_cache_read": 0
     }
   },
+  "opencode/longcat-2.5-preview-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 346,
+      "perMessage": 4,
+      "toolsExist": 45,
+      "perTool": 45,
+      "perDesc": 0,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 9,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 1
+    },
+    "name": "LongCat 2.5 Preview Free",
+    "contextWindow": 1000000,
+    "maxTokens": 131072,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
   "opencode/mimo-v2.5-free": {
     "encoding": "p50k_base",
     "tokens": {
@@ -191,6 +216,31 @@
       "contentMultiplier": 0.86
     },
     "name": "MiMo V2.5 Free",
+    "contextWindow": 200000,
+    "maxTokens": 32000,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
+  "opencode/mimo-v2.6-flash-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 343,
+      "perMessage": 4,
+      "toolsExist": 60,
+      "perTool": 60,
+      "perDesc": 0,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 9,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.86
+    },
+    "name": "MiMo-V2.6-Flash Free",
     "contextWindow": 200000,
     "maxTokens": 32000,
     "pricing": {
@@ -305,6 +355,32 @@
       "input": 0,
       "output": 0,
       "input_cache_read": 0
+    }
+  },
+  "opencode/space-bunny-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 623,
+      "perMessage": 4,
+      "toolsExist": 55,
+      "perTool": 55,
+      "perDesc": 1,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 9,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.8
+    },
+    "name": "Space Bunny Free",
+    "contextWindow": 1048576,
+    "maxTokens": 524288,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0,
+      "input_cache_write": 0
     }
   },
   "opencode/x-preview-f-free": {

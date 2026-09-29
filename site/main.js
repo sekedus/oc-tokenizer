@@ -409,7 +409,7 @@ populateModels();
 // Don't setup canvas until a model is selected
 
 // Set a default model and example text
-const defaultModel = 'opencode/deepseek-v4-flash-free';
+const defaultModel = 'opencode/big-pickle';
 if (models[defaultModel]) {
   // Set example text first
   inputText.value = `Hello! This is the OC Tokenizer demo.
