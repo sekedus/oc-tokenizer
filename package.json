@@ -1,6 +1,6 @@
 {
   "name": "oc-tokenizer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A faster than tiktoken tokenizer with first-class support for opencode models.",
   "homepage": "https://github.com/sekedus/oc-tokenizer?tab=readme-ov-file",
   "repository": {
