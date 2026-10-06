@@ -43,6 +43,28 @@
       "accuracy": "93.36%"
     }
   },
+  "opencode/fledge-alpha-free": {
+    "model": "opencode/fledge-alpha-free",
+    "configHash": "8b138ede",
+    "small": {
+      "predicted": 829,
+      "actual": 863,
+      "error": 34,
+      "accuracy": "96.06%"
+    },
+    "medium": {
+      "predicted": 4546,
+      "actual": 4649,
+      "error": 103,
+      "accuracy": "97.78%"
+    },
+    "large": {
+      "predicted": 45026,
+      "actual": 42266,
+      "error": 2760,
+      "accuracy": "93.47%"
+    }
+  },
   "opencode/hy3-free": {
     "model": "opencode/hy3-free",
     "configHash": "c5c6a9e6",
@@ -129,6 +151,28 @@
       "actual": 43685,
       "error": 1367,
       "accuracy": "96.87%"
+    }
+  },
+  "opencode/ling-3.1-flash-free": {
+    "model": "opencode/ling-3.1-flash-free",
+    "configHash": "9e3cd00a",
+    "small": {
+      "predicted": 872,
+      "actual": 892,
+      "error": 20,
+      "accuracy": "97.76%"
+    },
+    "medium": {
+      "predicted": 4607,
+      "actual": 4571,
+      "error": 36,
+      "accuracy": "99.21%"
+    },
+    "large": {
+      "predicted": 45048,
+      "actual": 45248,
+      "error": 200,
+      "accuracy": "99.56%"
     }
   },
   "opencode/longcat-2.0-free": {

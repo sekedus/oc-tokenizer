@@ -50,6 +50,30 @@
       "input_cache_read": 0
     }
   },
+  "opencode/fledge-alpha-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 515,
+      "perMessage": 1,
+      "toolsExist": 48,
+      "perTool": 48,
+      "perDesc": 0,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 9,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.86
+    },
+    "name": "Fledge Alpha Free",
+    "contextWindow": 1048576,
+    "maxTokens": 131072,
+    "pricing": {
+      "input": 0,
+      "output": 0
+    }
+  },
   "opencode/hy3-free": {
     "encoding": "cl100k_base",
     "tokens": {
@@ -147,6 +171,31 @@
     "pricing": {
       "input": 0,
       "output": 0
+    }
+  },
+  "opencode/ling-3.1-flash-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 523,
+      "perMessage": 6,
+      "toolsExist": 71,
+      "perTool": 71,
+      "perDesc": 0,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 10,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.86
+    },
+    "name": "Ling 3.1 Flash Free",
+    "contextWindow": 262144,
+    "maxTokens": 32768,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
     }
   },
   "opencode/longcat-2.0-free": {

@@ -28,9 +28,11 @@ const ENCODING_MULTIPLIER_OVERRIDES: Record<string, number> = {
 const MODEL_MULTIPLIER_OVERRIDES: Record<string, number> = {
     // opencode free models using p50k_base over-count content by ~17-22%
     "opencode/big-pickle": 0.83,
+    "opencode/fledge-alpha-free": 0.86,
     "opencode/laguna-s-2.1-free": 0.91,
     "opencode/ling-3.0-tiny-free": 1.0,
     "opencode/ling-3.0-flash-fin-free": 0.976,
+    "opencode/ling-3.1-flash-free": 0.86,
     "opencode/nemotron-3.5-lightning-free": 1.0,
     "opencode/nemotron-3-ultra-free": 0.98,
     "opencode/mimo-v2.5-free": 0.86,

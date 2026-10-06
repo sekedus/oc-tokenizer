@@ -132,10 +132,12 @@ Validated against actual API responses with pseudo-random messages:
 |-------|-------------|------------|-------------|
 | opencode/big-pickle | 95.77% | 96.23% | 97.45% |
 | opencode/deepseek-v4-flash-free | 96.63% | 92.89% | 93.36% |
+| opencode/fledge-alpha-free | 96.06% | 97.78% | 93.47% |
 | opencode/hy3-free | 96.60% | 98.56% | 98.91% |
 | opencode/laguna-s-2.1-free | 90.97% | 98.88% | 98.21% |
 | opencode/ling-3.0-flash-fin-free | 96.37% | 99.16% | 98.90% |
 | opencode/ling-3.0-tiny-free | 96.75% | 96.26% | 96.87% |
+| opencode/ling-3.1-flash-free | 97.76% | 99.21% | 99.56% |
 | opencode/longcat-2.0-free | 99.61% | 92.40% | 91.13% |
 | opencode/longcat-2.5-preview-free | 97.81% | 92.89% | 91.19% |
 | opencode/mimo-v2.5-free | 99.47% | 99.09% | 99.55% |
