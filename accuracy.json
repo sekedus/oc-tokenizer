@@ -21,6 +21,28 @@
       "accuracy": "97.45%"
     }
   },
+  "opencode/cat-jam-free": {
+    "model": "opencode/cat-jam-free",
+    "configHash": "77c639d7",
+    "small": {
+      "predicted": 813,
+      "actual": 831,
+      "error": 18,
+      "accuracy": "97.83%"
+    },
+    "medium": {
+      "predicted": 4609,
+      "actual": 4524,
+      "error": 85,
+      "accuracy": "98.12%"
+    },
+    "large": {
+      "predicted": 45007,
+      "actual": 44513,
+      "error": 494,
+      "accuracy": "98.89%"
+    }
+  },
   "opencode/deepseek-v4-flash-free": {
     "model": "opencode/deepseek-v4-flash-free",
     "configHash": "470b98d4",
@@ -371,6 +393,28 @@
       "actual": 44159,
       "error": 890,
       "accuracy": "97.98%"
+    }
+  },
+  "opencode/step-5-preview-free": {
+    "model": "opencode/step-5-preview-free",
+    "configHash": "478b7598",
+    "small": {
+      "predicted": 737,
+      "actual": 760,
+      "error": 23,
+      "accuracy": "96.97%"
+    },
+    "medium": {
+      "predicted": 4515,
+      "actual": 4435,
+      "error": 80,
+      "accuracy": "98.20%"
+    },
+    "large": {
+      "predicted": 45016,
+      "actual": 44282,
+      "error": 734,
+      "accuracy": "98.34%"
     }
   },
   "opencode/x-preview-f-free": {

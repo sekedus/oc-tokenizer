@@ -28,6 +28,7 @@ const ENCODING_MULTIPLIER_OVERRIDES: Record<string, number> = {
 const MODEL_MULTIPLIER_OVERRIDES: Record<string, number> = {
     // opencode free models using p50k_base over-count content by ~17-22%
     "opencode/big-pickle": 0.83,
+    "opencode/cat-jam-free": 0.83,
     "opencode/fledge-alpha-free": 0.86,
     "opencode/laguna-s-2.1-free": 0.91,
     "opencode/ling-3.0-tiny-free": 1.0,
@@ -40,12 +41,14 @@ const MODEL_MULTIPLIER_OVERRIDES: Record<string, number> = {
     "opencode/muse-spark-1.2-contributor-free": 0.83,
     "opencode/muse-spark-1.3-contributor-free": 0.83,
     "opencode/space-bunny-free": 0.80,
+    "opencode/step-5-preview-free": 0.80,
     "opencode/x-preview-f-free": 0.82,
 }
 
 const IGNORE_MODELS: string[] = [
     // 500 Internal server error
     "opencode/jev-1.13-free",
+    "opencode/exo-free",
 ]
 
 // Get tokenizer for a specific encoding
@@ -86,7 +89,7 @@ const run = async (model: string, messages: any[], tools?: any) => {
 interface ModelConfig {
     encoding: string
     // Only present when routing differs from the default
-    // (`@ai-sdk/openai-compatible` + zen/go base URL by key prefix).
+    // (`@ai-sdk/openai-compatible` + inference base URL by key prefix).
     provider?: ResolvedProvider
     tokens: {
         baseOverhead: number
@@ -151,7 +154,7 @@ async function fetchModels(): Promise<ApiModel[]> {
     const isPublic = isPublicApiKey(getOpencodeApiKey())
 
     const models: ApiModel[] = []
-    // With the free-tier key, only the zen provider (opencode) is reachable;
+    // With the free-tier key, only the inference provider (opencode) is reachable;
     // opencode-go models are not available, so skip them to avoid failed measurements.
     for (const providerId of isPublic ? ["opencode"] : ["opencode", "opencode-go"]) {
         const provider = data[providerId]

@@ -360,12 +360,12 @@ describe("ai-sdk", () => {
 
   test("every model resolves to a supported provider", () => {
     for (const [name, model] of Object.entries(models)) {
-      // Absent = default (`@ai-sdk/openai-compatible` + zen/go base URL).
+      // Absent = default (`@ai-sdk/openai-compatible` + inference base URL).
       const provider = (model as Model).provider ?? {
         npm: "@ai-sdk/openai-compatible",
         api: name.startsWith("opencode-go/")
-          ? "https://opencode.ai/zen/go/v1"
-          : "https://opencode.ai/zen/v1",
+          ? "https://opencode.ai/inference/go/v1"
+          : "https://opencode.ai/inference/v1",
       };
       expect([
         "@ai-sdk/openai",

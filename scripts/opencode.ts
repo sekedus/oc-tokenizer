@@ -16,21 +16,21 @@ export type { NpmProvider, ResolvedProvider } from "./providers.ts"
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible"
 
 /**
- * Configure the AI SDK default provider to route opencode (zen) and
+ * Configure the AI SDK default provider to route opencode (inference) and
  * opencode-go models to their respective base URLs.
  *
  * @deprecated Use `setupProvider` from `./providers.ts`, which routes each
  * model through its resolved SDK package.
  */
 export function setupOpencodeProvider(apiKey: string): void {
-    const zen = createOpenAICompatible({
+    const inference = createOpenAICompatible({
         name: "opencode",
-        baseURL: "https://opencode.ai/zen/v1",
+        baseURL: "https://opencode.ai/inference/v1",
         apiKey,
     })
     const go = createOpenAICompatible({
         name: "opencode-go",
-        baseURL: "https://opencode.ai/zen/go/v1",
+        baseURL: "https://opencode.ai/inference/go/v1",
         apiKey,
     })
     ;(globalThis as any).AI_SDK_DEFAULT_PROVIDER = {
@@ -40,9 +40,9 @@ export function setupOpencodeProvider(apiKey: string): void {
                 return go.languageModel(modelId.slice("opencode-go/".length))
             }
             if (modelId.startsWith("opencode/")) {
-                return zen.languageModel(modelId.slice("opencode/".length))
+                return inference.languageModel(modelId.slice("opencode/".length))
             }
-            return zen.languageModel(modelId)
+            return inference.languageModel(modelId)
         },
     }
 }

@@ -25,6 +25,31 @@
       "input_cache_write": 0
     }
   },
+  "opencode/cat-jam-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 621,
+      "perMessage": 9,
+      "toolsExist": 9,
+      "perTool": 9,
+      "perDesc": 2,
+      "perFirstProp": 3,
+      "perAdditionalProp": 3,
+      "perPropDesc": 2,
+      "perEnum": 6,
+      "perNestedObject": 9,
+      "perArrayOfObjects": 7,
+      "contentMultiplier": 0.83
+    },
+    "name": "Cat Jam Free",
+    "contextWindow": 262144,
+    "maxTokens": 131072,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
   "opencode/deepseek-v4-flash-free": {
     "encoding": "o200k_base",
     "tokens": {
@@ -302,7 +327,7 @@
     "encoding": "p50k_base",
     "provider": {
       "npm": "@ai-sdk/openai",
-      "api": "https://opencode.ai/zen/v1"
+      "api": "https://opencode.ai/inference/v1"
     },
     "tokens": {
       "baseOverhead": 757,
@@ -331,7 +356,7 @@
     "encoding": "p50k_base",
     "provider": {
       "npm": "@ai-sdk/openai",
-      "api": "https://opencode.ai/zen/v1"
+      "api": "https://opencode.ai/inference/v1"
     },
     "tokens": {
       "baseOverhead": 757,
@@ -430,6 +455,31 @@
       "output": 0,
       "input_cache_read": 0,
       "input_cache_write": 0
+    }
+  },
+  "opencode/step-5-preview-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 419,
+      "perMessage": 5,
+      "toolsExist": 44,
+      "perTool": 44,
+      "perDesc": 1,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 10,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.8
+    },
+    "name": "Step 5 Preview Free",
+    "contextWindow": 1000000,
+    "maxTokens": 65536,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
     }
   },
   "opencode/x-preview-f-free": {

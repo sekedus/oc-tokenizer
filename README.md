@@ -131,6 +131,7 @@ Validated against actual API responses with pseudo-random messages:
 | Model | ~500 tokens | ~5k tokens | ~50k tokens |
 |-------|-------------|------------|-------------|
 | opencode/big-pickle | 95.77% | 96.23% | 97.45% |
+| opencode/cat-jam-free | 97.83% | 98.12% | 98.89% |
 | opencode/deepseek-v4-flash-free | 96.63% | 92.89% | 93.36% |
 | opencode/fledge-alpha-free | 96.06% | 97.78% | 93.47% |
 | opencode/hy3-free | 96.60% | 98.56% | 98.91% |
@@ -147,6 +148,7 @@ Validated against actual API responses with pseudo-random messages:
 | opencode/nemotron-3-ultra-free | 99.50% | 99.10% | 99.87% |
 | opencode/nemotron-3.5-lightning-free | 99.66% | 97.37% | 97.86% |
 | opencode/space-bunny-free | 97.73% | 98.45% | 97.98% |
+| opencode/step-5-preview-free | 96.85% | 98.16% | 98.29% |
 | opencode/x-preview-f-free | 95.89% | 93.82% | 93.73% |
 
 <!-- ACCURACY_TABLE_END -->

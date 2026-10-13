@@ -27,14 +27,14 @@ export interface ResolvedProvider {
 }
 
 /**
- * The implicit default: `@ai-sdk/openai-compatible` against the zen/go base
- * URL matching the model key prefix. `models.json` omits the `provider`
+ * The implicit default: `@ai-sdk/openai-compatible` against the inference
+ * base URL matching the model key prefix. `models.json` omits the `provider`
  * block for these; only non-default routing is stored.
  */
 export function defaultProviderFor(modelId: string): ResolvedProvider {
     const api = modelId.startsWith("opencode-go/")
-        ? "https://opencode.ai/zen/go/v1"
-        : "https://opencode.ai/zen/v1"
+        ? "https://opencode.ai/inference/go/v1"
+        : "https://opencode.ai/inference/v1"
     return { npm: "@ai-sdk/openai-compatible", api }
 }
 
@@ -149,7 +149,7 @@ function readModelsJson(): Record<
 /**
  * Default resolver for `opencode/<id>` / `opencode-go/<id>` model ids.
  * Priority: live models.dev snapshot > models.json `provider` block >
- * prefix-based default (`@ai-sdk/openai-compatible` + zen/go base URL).
+ * prefix-based default (`@ai-sdk/openai-compatible` + inference base URL).
  */
 export function resolveModelProvider(modelId: string): ResolvedProvider {
     const live = liveResolutions.get(modelId)
@@ -181,7 +181,7 @@ function getClient(npm: NpmProvider, api: string, apiKey: string): ProviderClien
     switch (npm) {
         case "@ai-sdk/openai-compatible":
             client = createOpenAICompatible({
-                name: `opencode-${api.includes("/go/") ? "go" : "zen"}`,
+                name: `opencode-${api.includes("/go/") ? "go" : "inference"}`,
                 baseURL: api,
                 apiKey,
             })
@@ -190,12 +190,12 @@ function getClient(npm: NpmProvider, api: string, apiKey: string): ProviderClien
             client = createOpenAI({ baseURL: api, apiKey })
             break
         case "@ai-sdk/anthropic":
-            // Zen expects Bearer auth; the Anthropic package sends
+            // Inference expects Bearer auth; the Anthropic package sends
             // `x-api-key` by default, so pass the key as authToken instead.
             client = createAnthropic({ baseURL: api, authToken: apiKey })
             break
         case "@ai-sdk/google":
-            // Zen expects Bearer auth; the Google package sends
+            // Inference expects Bearer auth; the Google package sends
             // `x-goog-api-key` by default, so override via headers.
             client = createGoogle({
                 baseURL: api,
@@ -225,7 +225,7 @@ export function getLanguageModel(
 }
 
 /**
- * Configure the AI SDK default provider to route opencode (zen) and
+ * Configure the AI SDK default provider to route opencode (inference) and
  * opencode-go models through the per-model resolved SDK package.
  * `resolve` maps a full model id to its resolved `{ npm, api }`.
  */
