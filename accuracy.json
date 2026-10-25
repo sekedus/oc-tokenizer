@@ -1,4 +1,26 @@
 {
+  "opencode/beam-free": {
+    "model": "opencode/beam-free",
+    "configHash": "335030a7",
+    "small": {
+      "predicted": 492,
+      "actual": 460,
+      "error": 32,
+      "accuracy": "93.04%"
+    },
+    "medium": {
+      "predicted": 4524,
+      "actual": 4711,
+      "error": 187,
+      "accuracy": "96.03%"
+    },
+    "large": {
+      "predicted": 45027,
+      "actual": 47160,
+      "error": 2133,
+      "accuracy": "95.48%"
+    }
+  },
   "opencode/big-pickle": {
     "model": "opencode/big-pickle",
     "configHash": "dff03683",
@@ -65,6 +87,28 @@
       "accuracy": "93.36%"
     }
   },
+  "opencode/deepseek-v4.1-flash-free": {
+    "model": "opencode/deepseek-v4.1-flash-free",
+    "configHash": "8f6d2930",
+    "small": {
+      "predicted": 836,
+      "actual": 857,
+      "error": 21,
+      "accuracy": "97.55%"
+    },
+    "medium": {
+      "predicted": 4589,
+      "actual": 4471,
+      "error": 118,
+      "accuracy": "97.36%"
+    },
+    "large": {
+      "predicted": 45008,
+      "actual": 44311,
+      "error": 697,
+      "accuracy": "98.43%"
+    }
+  },
   "opencode/fledge-alpha-free": {
     "model": "opencode/fledge-alpha-free",
     "configHash": "8b138ede",
@@ -85,6 +129,50 @@
       "actual": 42266,
       "error": 2760,
       "accuracy": "93.47%"
+    }
+  },
+  "opencode/flint-40b-free": {
+    "model": "opencode/flint-40b-free",
+    "configHash": "d27eabf0",
+    "small": {
+      "predicted": 645,
+      "actual": 663,
+      "error": 18,
+      "accuracy": "97.29%"
+    },
+    "medium": {
+      "predicted": 4500,
+      "actual": 4446,
+      "error": 54,
+      "accuracy": "98.79%"
+    },
+    "large": {
+      "predicted": 45013,
+      "actual": 44373,
+      "error": 640,
+      "accuracy": "98.56%"
+    }
+  },
+  "opencode/glm-5.3-flash-free": {
+    "model": "opencode/glm-5.3-flash-free",
+    "configHash": "20f3fb2e",
+    "small": {
+      "predicted": 678,
+      "actual": 700,
+      "error": 22,
+      "accuracy": "96.86%"
+    },
+    "medium": {
+      "predicted": 4503,
+      "actual": 4421,
+      "error": 82,
+      "accuracy": "98.15%"
+    },
+    "large": {
+      "predicted": 45026,
+      "actual": 44240,
+      "error": 786,
+      "accuracy": "98.22%"
     }
   },
   "opencode/hy3-free": {
@@ -285,6 +373,28 @@
       "accuracy": "98.96%"
     }
   },
+  "opencode/minimax-m3.1-flash-free": {
+    "model": "opencode/minimax-m3.1-flash-free",
+    "configHash": "84c6c344",
+    "small": {
+      "predicted": 993,
+      "actual": 1013,
+      "error": 20,
+      "accuracy": "98.03%"
+    },
+    "medium": {
+      "predicted": 4541,
+      "actual": 4594,
+      "error": 53,
+      "accuracy": "98.85%"
+    },
+    "large": {
+      "predicted": 45050,
+      "actual": 45580,
+      "error": 530,
+      "accuracy": "98.84%"
+    }
+  },
   "opencode/muse-spark-1.3-contributor-free": {
     "model": "opencode/muse-spark-1.3-contributor-free",
     "configHash": "736cdad6",
@@ -371,6 +481,28 @@
       "actual": 44961,
       "error": 60,
       "accuracy": "99.87%"
+    }
+  },
+  "opencode/nemotron-3.5-super-vl-free": {
+    "model": "opencode/nemotron-3.5-super-vl-free",
+    "configHash": "2e58ec4a",
+    "small": {
+      "predicted": 887,
+      "actual": 886,
+      "error": 1,
+      "accuracy": "99.89%"
+    },
+    "medium": {
+      "predicted": 4511,
+      "actual": 4476,
+      "error": 35,
+      "accuracy": "99.22%"
+    },
+    "large": {
+      "predicted": 45053,
+      "actual": 44679,
+      "error": 374,
+      "accuracy": "99.16%"
     }
   },
   "opencode/space-bunny-free": {

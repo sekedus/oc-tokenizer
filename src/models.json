@@ -1,4 +1,29 @@
 {
+  "opencode/beam-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 165,
+      "perMessage": 9,
+      "toolsExist": 9,
+      "perTool": 9,
+      "perDesc": 2,
+      "perFirstProp": 3,
+      "perAdditionalProp": 3,
+      "perPropDesc": 2,
+      "perEnum": 6,
+      "perNestedObject": 9,
+      "perArrayOfObjects": 7,
+      "contentMultiplier": 0.77
+    },
+    "name": "Beam Free",
+    "contextWindow": 1048576,
+    "maxTokens": 131072,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
   "opencode/big-pickle": {
     "encoding": "p50k_base",
     "tokens": {
@@ -42,7 +67,7 @@
       "contentMultiplier": 0.83
     },
     "name": "Cat Jam Free",
-    "contextWindow": 262144,
+    "contextWindow": 1048576,
     "maxTokens": 131072,
     "pricing": {
       "input": 0,
@@ -75,6 +100,31 @@
       "input_cache_read": 0
     }
   },
+  "opencode/deepseek-v4.1-flash-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 519,
+      "perMessage": 1,
+      "toolsExist": 48,
+      "perTool": 48,
+      "perDesc": 1,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 10,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.82
+    },
+    "name": "DeepSeek V4.1 Flash Free",
+    "contextWindow": 200000,
+    "maxTokens": 32000,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
   "opencode/fledge-alpha-free": {
     "encoding": "p50k_base",
     "tokens": {
@@ -97,6 +147,56 @@
     "pricing": {
       "input": 0,
       "output": 0
+    }
+  },
+  "opencode/flint-40b-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 343,
+      "perMessage": -1,
+      "toolsExist": 46,
+      "perTool": 46,
+      "perDesc": 0,
+      "perFirstProp": 13,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 10,
+      "perNestedObject": 10,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.75
+    },
+    "name": "Flint 40B Free",
+    "contextWindow": 262144,
+    "maxTokens": 65536,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
+  "opencode/glm-5.3-flash-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 369,
+      "perMessage": 1,
+      "toolsExist": 46,
+      "perTool": 46,
+      "perDesc": 0,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 10,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.78
+    },
+    "name": "GLM-5.3-Flash Free",
+    "contextWindow": 200000,
+    "maxTokens": 32000,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
     }
   },
   "opencode/hy3-free": {
@@ -323,11 +423,36 @@
       "input_cache_read": 0
     }
   },
+  "opencode/minimax-m3.1-flash-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 669,
+      "perMessage": 4,
+      "toolsExist": 57,
+      "perTool": 57,
+      "perDesc": 0,
+      "perFirstProp": 14,
+      "perAdditionalProp": 11,
+      "perPropDesc": 5,
+      "perEnum": 9,
+      "perNestedObject": 9,
+      "perArrayOfObjects": 11,
+      "contentMultiplier": 0.77
+    },
+    "name": "MiniMax M3.1 Flash Free",
+    "contextWindow": 1000000,
+    "maxTokens": 512000,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
   "opencode/muse-spark-1.3-contributor-free": {
     "encoding": "p50k_base",
     "provider": {
       "npm": "@ai-sdk/openai",
-      "api": "https://opencode.ai/inference/v1"
+      "api": "https://opencode.ai/inference/openai/v1"
     },
     "tokens": {
       "baseOverhead": 757,
@@ -356,7 +481,7 @@
     "encoding": "p50k_base",
     "provider": {
       "npm": "@ai-sdk/openai",
-      "api": "https://opencode.ai/inference/v1"
+      "api": "https://opencode.ai/inference/openai/v1"
     },
     "tokens": {
       "baseOverhead": 757,
@@ -425,6 +550,31 @@
     "name": "Nemotron 3.5 Lightning Free",
     "contextWindow": 262144,
     "maxTokens": 262144,
+    "pricing": {
+      "input": 0,
+      "output": 0,
+      "input_cache_read": 0
+    }
+  },
+  "opencode/nemotron-3.5-super-vl-free": {
+    "encoding": "p50k_base",
+    "tokens": {
+      "baseOverhead": 487,
+      "perMessage": 5,
+      "toolsExist": 51,
+      "perTool": 51,
+      "perDesc": 1,
+      "perFirstProp": 28,
+      "perAdditionalProp": 22,
+      "perPropDesc": 6,
+      "perEnum": 12,
+      "perNestedObject": -10,
+      "perArrayOfObjects": -17,
+      "contentMultiplier": 0.9
+    },
+    "name": "Nemotron 3.5 Super VL Free",
+    "contextWindow": 1048576,
+    "maxTokens": 131072,
     "pricing": {
       "input": 0,
       "output": 0,

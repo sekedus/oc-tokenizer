@@ -28,13 +28,15 @@ export interface ResolvedProvider {
 
 /**
  * The implicit default: `@ai-sdk/openai-compatible` against the inference
- * base URL matching the model key prefix. `models.json` omits the `provider`
- * block for these; only non-default routing is stored.
+ * base URL matching the model key prefix (Console serves the OpenAI
+ * Chat Completions family from `/inference/openai/v1`; Go mirrors it under
+ * `/inference/go/openai/v1`). `models.json` omits the `provider` block for
+ * these; only non-default routing is stored.
  */
 export function defaultProviderFor(modelId: string): ResolvedProvider {
     const api = modelId.startsWith("opencode-go/")
-        ? "https://opencode.ai/inference/go/v1"
-        : "https://opencode.ai/inference/v1"
+        ? "https://opencode.ai/inference/go/openai/v1"
+        : "https://opencode.ai/inference/openai/v1"
     return { npm: "@ai-sdk/openai-compatible", api }
 }
 

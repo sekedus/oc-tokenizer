@@ -239,24 +239,45 @@ async function testModelAtScale(modelName: ModelName, targetTokens: number): Pro
     // `predicted` above is computed without them, matching how measureModel
     // bakes their cost into baseOverhead.
     const shim = await getFreeTierShim(modelName);
-    const result = streamText({
-        model: modelName,
-        messages,
-        tools: shim ? { ...shim.tools, ...tools } : tools,
-        headers: shim?.headers,
-        maxOutputTokens: 16,
-        // This measurement script intentionally passes a system message inside
-        // `messages` to measure its token overhead. The messages are trusted
-        // server-side data, so opt in to the v7 behavior that rejects them.
-        allowSystemInMessages: true,
-    });
-    await result.consumeStream();
-    const usage = await result.usage;
-    const inputTokens = usage.inputTokens;
-    if (typeof inputTokens !== "number" || Number.isNaN(inputTokens)) {
-        throw new Error(`model returned no input token usage (inputTokens=${inputTokens})`);
+
+    // The zen free endpoint intermittently answers 429 ("Endpoint is
+    // unavailable") while its upstream pooling settles; the SDK marks that
+    // as retryable. Without a retry here one unlucky attempt discards the
+    // whole model's run and keeps yesterday's cached numbers.
+    let actual: number | null = null;
+    let lastError: unknown = null;
+    for (let attempt = 1; attempt <= 4 && actual === null; attempt++) {
+        try {
+            const result = streamText({
+                model: modelName,
+                messages,
+                tools: shim ? { ...shim.tools, ...tools } : tools,
+                headers: shim?.headers,
+                maxOutputTokens: 16,
+                // This measurement script intentionally passes a system message inside
+                // `messages` to measure its token overhead. The messages are trusted
+                // server-side data, so opt in to the v7 behavior that rejects them.
+                allowSystemInMessages: true,
+            });
+            await result.consumeStream();
+            const usage = await result.usage;
+            const inputTokens = usage.inputTokens;
+            if (typeof inputTokens !== "number" || Number.isNaN(inputTokens)) {
+                throw new Error(`model returned no input token usage (inputTokens=${inputTokens})`);
+            }
+            actual = inputTokens;
+        } catch (error) {
+            lastError = error;
+            const retryable =
+                typeof error === "object" && error !== null &&
+                (error as { isRetryable?: unknown }).isRetryable === true;
+            if (!retryable || attempt === 4) throw error;
+            const message = error instanceof Error ? error.message : String(error);
+            console.log(`  retry ${attempt}/4 after: ${message.split("\n")[0]}`);
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+        }
     }
-    const actual = inputTokens;
+    if (actual === null) throw lastError;
 
     return { predicted: predicted.total, actual };
 }
@@ -288,51 +309,62 @@ async function generateAccuracyMetrics(cache: AccuracyCache): Promise<AccuracyCa
             console.log(`Testing ${model}...`);
         }
 
-        // Small: ~500 tokens
-        const small = await testModelAtScale(model, 500);
-        if (small) {
-            console.log(`  Small (~500t): pred=${small.predicted}, actual=${small.actual}, ${formatAccuracy(small.predicted, small.actual)}`);
+        try {
+            // Small: ~500 tokens
+            const small = await testModelAtScale(model, 500);
+            if (small) {
+                console.log(`  Small (~500t): pred=${small.predicted}, actual=${small.actual}, ${formatAccuracy(small.predicted, small.actual)}`);
+            }
+
+            // Medium: ~5,000 tokens  
+            const medium = await testModelAtScale(model, 5000);
+            if (medium) {
+                console.log(`  Medium (~5kt): pred=${medium.predicted}, actual=${medium.actual}, ${formatAccuracy(medium.predicted, medium.actual)}`);
+            }
+
+            // Large: ~50,000 tokens
+            const large = await testModelAtScale(model, 50000);
+            if (large) {
+                console.log(`  Large (~50kt): pred=${large.predicted}, actual=${large.actual}, ${formatAccuracy(large.predicted, large.actual)}\n`);
+            } else {
+                console.log();
+            }
+
+            updatedCache[model] = {
+                model,
+                configHash,
+                small: small ? {
+                    predicted: small.predicted,
+                    actual: small.actual,
+                    error: Math.abs(small.actual - small.predicted),
+                    accuracy: formatAccuracy(small.predicted, small.actual),
+                } : null,
+                medium: medium ? {
+                    predicted: medium.predicted,
+                    actual: medium.actual,
+                    error: Math.abs(medium.actual - medium.predicted),
+                    accuracy: formatAccuracy(medium.predicted, medium.actual),
+                } : null,
+                large: large ? {
+                    predicted: large.predicted,
+                    actual: large.actual,
+                    error: Math.abs(large.actual - large.predicted),
+                    accuracy: formatAccuracy(large.predicted, large.actual),
+                } : null,
+            };
+
+            // Save immediately after each successful test
+            saveAccuracyCache(updatedCache);
+        } catch (error) {
+            // One dead or flaky model must not abort the whole run (and lose
+            // the README/accuracy.json updates for every other model).
+            console.error(`❌ Failed to test ${model}: ${error instanceof Error ? error.message : error}`)
+            console.error(`  → Keeping cached results (if any), continuing with next model`)
+            // Keep the previous cache entry so the model is retried on the next run.
+            if (cached) {
+                updatedCache[model] = cached
+            }
         }
-
-        // Medium: ~5,000 tokens  
-        const medium = await testModelAtScale(model, 5000);
-        if (medium) {
-            console.log(`  Medium (~5kt): pred=${medium.predicted}, actual=${medium.actual}, ${formatAccuracy(medium.predicted, medium.actual)}`);
-        }
-
-        // Large: ~50,000 tokens
-        const large = await testModelAtScale(model, 50000);
-        if (large) {
-            console.log(`  Large (~50kt): pred=${large.predicted}, actual=${large.actual}, ${formatAccuracy(large.predicted, large.actual)}\n`);
-        } else {
-            console.log();
-        }
-
-        updatedCache[model] = {
-            model,
-            configHash,
-            small: small ? {
-                predicted: small.predicted,
-                actual: small.actual,
-                error: Math.abs(small.actual - small.predicted),
-                accuracy: formatAccuracy(small.predicted, small.actual),
-            } : null,
-            medium: medium ? {
-                predicted: medium.predicted,
-                actual: medium.actual,
-                error: Math.abs(medium.actual - medium.predicted),
-                accuracy: formatAccuracy(medium.predicted, medium.actual),
-            } : null,
-            large: large ? {
-                predicted: large.predicted,
-                actual: large.actual,
-                error: Math.abs(large.actual - large.predicted),
-                accuracy: formatAccuracy(large.predicted, large.actual),
-            } : null,
-        };
-
-        // Save immediately after each successful test
-        saveAccuracyCache(updatedCache);
     }
 
     return updatedCache;

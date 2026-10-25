@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/oc-tokenizer)](https://www.npmjs.com/package/oc-tokenizer)
 [![npm downloads](https://img.shields.io/npm/dm/oc-tokenizer)](https://www.npmjs.com/package/oc-tokenizer)
 
-> This project is a fork of [coder/ai-tokenizer](https://github.com/coder/ai-tokenizer/tree/9fa777aa591303a3aad26f3e5cd5c6c0cc8be6fc) with some modifications to support opencode models: opencode & opencode-go providers routed per model through `@ai-sdk/openai`, `@ai-sdk/openai-compatible`, `@ai-sdk/anthropic`, and `@ai-sdk/google`, model configs sourced from `models.dev`, and per-model accuracy calibration.
+> This project is a fork of [coder/ai-tokenizer](https://github.com/coder/ai-tokenizer/tree/107814b9a76bb25b339c1d3da2867a0475f4c320) with some modifications to support opencode models: opencode & opencode-go providers routed per model through `@ai-sdk/openai`, `@ai-sdk/openai-compatible`, `@ai-sdk/anthropic`, and `@ai-sdk/google`, model configs sourced from `models.dev`, and per-model accuracy calibration.
 
 A faster than tiktoken tokenizer with first-class support for opencode models.
 
@@ -130,10 +130,14 @@ Validated against actual API responses with pseudo-random messages:
 <!-- ACCURACY_TABLE_START -->
 | Model | ~500 tokens | ~5k tokens | ~50k tokens |
 |-------|-------------|------------|-------------|
+| opencode/beam-free | 93.04% | 96.03% | 95.48% |
 | opencode/big-pickle | 95.77% | 96.23% | 97.45% |
 | opencode/cat-jam-free | 97.83% | 98.12% | 98.89% |
 | opencode/deepseek-v4-flash-free | 96.63% | 92.89% | 93.36% |
+| opencode/deepseek-v4.1-flash-free | 97.55% | 97.36% | 98.43% |
 | opencode/fledge-alpha-free | 96.06% | 97.78% | 93.47% |
+| opencode/flint-40b-free | 97.29% | 98.79% | 98.56% |
+| opencode/glm-5.3-flash-free | 96.86% | 98.15% | 98.22% |
 | opencode/hy3-free | 96.60% | 98.56% | 98.91% |
 | opencode/laguna-s-2.1-free | 90.97% | 98.88% | 98.21% |
 | opencode/ling-3.0-flash-fin-free | 96.37% | 99.16% | 98.90% |
@@ -143,12 +147,14 @@ Validated against actual API responses with pseudo-random messages:
 | opencode/longcat-2.5-preview-free | 97.81% | 92.89% | 91.19% |
 | opencode/mimo-v2.5-free | 99.47% | 99.09% | 99.55% |
 | opencode/mimo-v2.6-flash-free | 96.85% | 99.29% | 98.96% |
+| opencode/minimax-m3.1-flash-free | 98.03% | 98.85% | 98.84% |
 | opencode/muse-spark-1.2-contributor-free | 98.26% | 94.12% | 92.76% |
 | opencode/muse-spark-1.3-contributor-free | 98.26% | 94.08% | 92.72% |
 | opencode/nemotron-3-ultra-free | 99.50% | 99.10% | 99.87% |
 | opencode/nemotron-3.5-lightning-free | 99.66% | 97.37% | 97.86% |
+| opencode/nemotron-3.5-super-vl-free | 99.89% | 99.22% | 99.16% |
 | opencode/space-bunny-free | 97.73% | 98.45% | 97.98% |
-| opencode/step-5-preview-free | 96.85% | 98.16% | 98.29% |
+| opencode/step-5-preview-free | 96.97% | 98.20% | 98.34% |
 | opencode/x-preview-f-free | 95.89% | 93.82% | 93.73% |
 
 <!-- ACCURACY_TABLE_END -->

@@ -25,12 +25,12 @@ import { createOpenAICompatible } from "@ai-sdk/openai-compatible"
 export function setupOpencodeProvider(apiKey: string): void {
     const inference = createOpenAICompatible({
         name: "opencode",
-        baseURL: "https://opencode.ai/inference/v1",
+        baseURL: "https://opencode.ai/inference/openai/v1",
         apiKey,
     })
     const go = createOpenAICompatible({
         name: "opencode-go",
-        baseURL: "https://opencode.ai/inference/go/v1",
+        baseURL: "https://opencode.ai/inference/go/openai/v1",
         apiKey,
     })
     ;(globalThis as any).AI_SDK_DEFAULT_PROVIDER = {

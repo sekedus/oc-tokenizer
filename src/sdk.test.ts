@@ -364,8 +364,8 @@ describe("ai-sdk", () => {
       const provider = (model as Model).provider ?? {
         npm: "@ai-sdk/openai-compatible",
         api: name.startsWith("opencode-go/")
-          ? "https://opencode.ai/inference/go/v1"
-          : "https://opencode.ai/inference/v1",
+          ? "https://opencode.ai/inference/go/openai/v1"
+          : "https://opencode.ai/inference/openai/v1",
       };
       expect([
         "@ai-sdk/openai",

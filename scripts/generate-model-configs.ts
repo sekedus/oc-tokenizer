@@ -26,18 +26,24 @@ const ENCODING_MULTIPLIER_OVERRIDES: Record<string, number> = {
 // Per-model content multiplier overrides - takes precedence over encoding overrides
 // Use this for models that need a different multiplier than others using the same encoding
 const MODEL_MULTIPLIER_OVERRIDES: Record<string, number> = {
-    // opencode free models using p50k_base over-count content by ~17-22%
+    // opencode free models using p50k_base over-count content by ~17-23%
+    "opencode/beam-free": 0.77,
     "opencode/big-pickle": 0.83,
     "opencode/cat-jam-free": 0.83,
+    "opencode/deepseek-v4.1-flash-free": 0.82,
     "opencode/fledge-alpha-free": 0.86,
+    "opencode/flint-40b-free": 0.75,
+    "opencode/glm-5.3-flash-free": 0.78,
     "opencode/laguna-s-2.1-free": 0.91,
     "opencode/ling-3.0-tiny-free": 1.0,
     "opencode/ling-3.0-flash-fin-free": 0.976,
     "opencode/ling-3.1-flash-free": 0.86,
     "opencode/nemotron-3.5-lightning-free": 1.0,
     "opencode/nemotron-3-ultra-free": 0.98,
+    "opencode/nemotron-3.5-super-vl-free": 0.9,
     "opencode/mimo-v2.5-free": 0.86,
     "opencode/mimo-v2.6-flash-free": 0.86,
+    "opencode/minimax-m3.1-flash-free": 0.77,
     "opencode/muse-spark-1.2-contributor-free": 0.83,
     "opencode/muse-spark-1.3-contributor-free": 0.83,
     "opencode/space-bunny-free": 0.80,
@@ -50,6 +56,18 @@ const IGNORE_MODELS: string[] = [
     "opencode/jev-1.13-free",
     "opencode/exo-free",
 ]
+
+// Upstream providers behind the inference endpoint reject function tools
+// that omit `description` ("tools[N]: function.description is required"),
+// so every probe tool must carry one.
+// The baseline is a single character: its cost lands in the measured
+// toolsExist/perTool overhead and cancels out of the probe deltas below.
+const MINIMAL_TOOL_DESCRIPTION = "x"
+
+const probeTool = (
+    inputSchema: any,
+    description: string = MINIMAL_TOOL_DESCRIPTION,
+) => tool({ description, inputSchema })
 
 // Get tokenizer for a specific encoding
 const getTokenizer = (encodingName: string): Tokenizer => {
@@ -224,7 +242,7 @@ async function measureModel(modelName: string, encoding: string, apiModel: ApiMo
 
     // Create a simple tool for message overhead tests
     const testTool = {
-        x: tool({ inputSchema: z.object({ y: z.string() }) })
+        x: probeTool(z.object({ y: z.string() }))
     }
     
     // Run all API calls in parallel for maximum speed
@@ -296,57 +314,57 @@ async function measureModel(modelName: string, encoding: string, apiModel: ApiMo
         // 2. Tool overhead
         run(modelName, [{ role: "user", content: "Test" }], {}),
         run(modelName, [{ role: "user", content: "Test" }], {
-            x: tool({ inputSchema: z.object({}) }),
+            x: probeTool(z.object({})),
         }),
         run(modelName, [{ role: "user", content: "Test" }], {
-            x: tool({ inputSchema: z.object({}) }),
-            y: tool({ inputSchema: z.object({}) }),
+            x: probeTool(z.object({})),
+            y: probeTool(z.object({})),
         }),
         // 3. Tool description overhead
         run(modelName, [{ role: "user", content: "Test" }], {
-            x: tool({ description: "Hi", inputSchema: z.object({}) }),
+            x: probeTool(z.object({}), "Hi"),
         }),
         // 4. Property overhead
         run(modelName, [{ role: "user", content: "Test" }], {
-            x: tool({ inputSchema: z.object({ y: z.string() }) }),
+            x: probeTool(z.object({ y: z.string() })),
         }),
         run(modelName, [{ role: "user", content: "Test" }], {
-            x: tool({ inputSchema: z.object({ y: z.string(), z: z.string() }) }),
+            x: probeTool(z.object({ y: z.string(), z: z.string() })),
         }),
         // 5. Property description overhead
         run(modelName, [{ role: "user", content: "Test" }], {
-            x: tool({ inputSchema: z.object({ y: z.string().describe("Hi") }) }),
+            x: probeTool(z.object({ y: z.string().describe("Hi") })),
         }),
         // 6. Enum overhead
         run(modelName, [{ role: "user", content: "Test" }], {
-            x: tool({ inputSchema: z.object({ y: z.string() }) }),
+            x: probeTool(z.object({ y: z.string() })),
         }),
         run(modelName, [{ role: "user", content: "Test" }], {
-            x: tool({ inputSchema: z.object({ y: z.enum(["a", "b", "c"]) }) }),
+            x: probeTool(z.object({ y: z.enum(["a", "b", "c"]) })),
         }),
         // 7. Nested object overhead
         run(modelName, [{ role: "user", content: "Test" }], {
-            x: tool({ inputSchema: z.object({ y: z.string().describe("Hi"), z: z.string().describe("Hi") }) }),
+            x: probeTool(z.object({ y: z.string().describe("Hi"), z: z.string().describe("Hi") })),
         }),
         run(modelName, [{ role: "user", content: "Test" }], {
-            x: tool({ inputSchema: z.object({ 
+            x: probeTool(z.object({ 
                 data: z.object({
                     y: z.string().describe("Hi"),
                     z: z.string().describe("Hi"),
                 }).describe("Data"),
-            }) }),
+            })),
         }),
         // 8. Array of objects overhead
         run(modelName, [{ role: "user", content: "Test" }], {
-            x: tool({ inputSchema: z.object({ items: z.array(z.string()).describe("Items") }) }),
+            x: probeTool(z.object({ items: z.array(z.string()).describe("Items") })),
         }),
         run(modelName, [{ role: "user", content: "Test" }], {
-            x: tool({ inputSchema: z.object({ 
+            x: probeTool(z.object({ 
                 items: z.array(z.object({
                     y: z.string().describe("Hi"),
                     z: z.string().describe("Hi"),
                 })).describe("Items"),
-            }) }),
+            })),
         }),
     ])
 
@@ -394,7 +412,14 @@ async function measureModel(modelName: string, encoding: string, apiModel: ApiMo
     const toolsExist = emptyTool - noTools - tokenizer.encode("x").length
     const perTool = twoTools - emptyTool - tokenizer.encode("y").length
     
-    const perDesc = withDesc - emptyTool - tokenizer.encode("Hi").length
+    // Tool description overhead. Every probe tool now carries a description
+    // (MINIMAL_TOOL_DESCRIPTION on baselines, "Hi" here), so compare "Hi"
+    // against the baseline and normalize away the description text itself.
+    const perDesc =
+        withDesc
+        - emptyTool
+        - tokenizer.encode("Hi").length
+        + tokenizer.encode(MINIMAL_TOOL_DESCRIPTION).length
     
     const perFirstProp = oneProp - emptyTool - tokenizer.encode("y").length
     const perAdditionalProp = twoProp - oneProp - tokenizer.encode("z").length
